@@ -241,6 +241,8 @@
                 <!-- Hidden GPS -->
                 <input type="hidden" id="start_lat" name="start_lat">
                 <input type="hidden" id="start_lon" name="start_lon">
+                <input type="hidden" id="start_time" name="start_time">
+                <input type="hidden" id="end_time" name="end_time">
 
                 <!-- Manual location -->
                 <label style="color:#475569;font-weight:700;">Enter Start Location (Optional)</label>
@@ -467,7 +469,7 @@
                 }
             }
 
-            // Store trip data in localStorage for result page
+            // Store trip data in localStorage for result page (Optional backup)
             const tripData = {
                 start_lat: start_lat.value,
                 start_lon: start_lon.value,
@@ -479,8 +481,12 @@
             };
             localStorage.setItem('tripData', JSON.stringify(tripData));
 
-            // Redirect to result page
-            window.location.href = "result.html";
+            // POPULATE HIDDEN INPUTS FOR FLASK
+            document.getElementById("start_time").value = start_hour.value + ":" + start_minute.value;
+            document.getElementById("end_time").value = end_hour.value + ":" + end_minute.value;
+
+            // Submit form to Flask Backend
+            trip_form.submit();
         }
 
 
