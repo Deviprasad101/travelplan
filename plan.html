@@ -442,31 +442,25 @@
         /* SUBMIT TRIP */
         async function submitTrip() {
 
+
             let trip_form = document.getElementById("trip-form");  // ← FIXED LINE
 
             const manual = manual_location.value.trim();
 
-            // Manual mode
-            if (!geoEnabled) {
-                if (manual === "") {
-                    alert("Please enter your start location because GPS is OFF.");
-                    return;
-                }
-
+            // PRIORITY: If user typed something manually, use it (ignore GPS toggle)
+            if (manual !== "") {
                 const loc = await geocode(manual);
                 if (!loc) {
-                    alert("Invalid location. Try again.");
+                    alert("Could not find that location. Please try a different name or address.");
                     return;
                 }
-
                 start_lat.value = loc.lat;
                 start_lon.value = loc.lon;
-            } else {
-                // Geo Mode Validation
-                if (!start_lat.value || !start_lon.value) {
-                    alert("GPS location not detected yet. Please wait or switch to manual mode.");
-                    return;
-                }
+            }
+            // FALLBACK: If manual empty, require GPS
+            else if (!start_lat.value || !start_lon.value) {
+                alert("No location detected. Please enter a location manually or enable GPS.");
+                return;
             }
 
             // Store trip data in localStorage
