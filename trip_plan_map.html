@@ -223,12 +223,32 @@
 
                                 // Create Popup content
                                 var popupContent = `
-                                    <div style='width:200px; font-family:"Segoe UI", sans-serif;'>
-                                        <b style='color:#be185d'>${index + 1}. ${p['name of the place']}</b><br>
-                                        <span style='color:#555; font-size:12px;'>${p['category']}</span><br>
-                                        <hr style='border:0; border-top:1px solid #eee; margin:5px 0;'>
-                                        Visit: ${p.visit_start} - ${p.visit_end}<br>
-                                        Spend: ${p.spend_time_minutes} min
+                                    <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>
+                                        <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>
+                                            <h3 style='margin:0; color:#831843; font-size:16px;'>${index + 1}. ${p['name of the place']}</h3>
+                                        </div>
+                                        <table style='width:100%; border-collapse:collapse; font-size:13px;'>
+                                            <tr style='border-bottom: 1px solid #fce7f3;'>
+                                                <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>
+                                                <td style='padding:6px 0; color:#374151;'>${p['category'] || 'N/A'}</td>
+                                            </tr>
+                                            <tr style='border-bottom: 1px solid #fce7f3;'>
+                                                <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>
+                                                <td style='padding:6px 0; color:#374151;'>${p.visit_start} - ${p.visit_end}</td>
+                                            </tr>
+                                            <tr style='border-bottom: 1px solid #fce7f3;'>
+                                                <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>
+                                                <td style='padding:6px 0; color:#374151;'>${p.spend_time_minutes} mins</td>
+                                            </tr>
+                                            <tr style='border-bottom: 1px solid #fce7f3;'>
+                                                <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>
+                                                <td style='padding:6px 0; color:#374151;'>${p.distance_from_previous ? p.distance_from_previous + ' km' : 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>
+                                                <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>${p.description || 'No description available'}</td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 `;
                                 marker.bindPopup(popupContent);
