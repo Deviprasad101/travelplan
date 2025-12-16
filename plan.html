@@ -352,6 +352,8 @@
         let geoEnabled = true;
 
         /* GEO ON/OFF SYSTEM */
+
+        /* GEO ON/OFF SYSTEM */
         function toggleGeo() {
             geoEnabled = !geoEnabled;
 
@@ -361,26 +363,24 @@
             if (geoEnabled) {
                 btn.textContent = "ON";
                 btn.classList.remove("off");
-
                 gps_status.textContent = "GPS is ON — Detecting your location…";
                 gps_status.style.color = "#0369a1";
 
-                manualInput.disabled = true;
-                manualInput.style.opacity = "0.5";
-                manualInput.style.cursor = "not-allowed";
+                // Don't disable manual input, just create visual distinction
+                manualInput.style.opacity = "1";
+                manualInput.placeholder = "Or type a location here to override GPS...";
 
-                detectLocation(); // Re-detect when turned ON
+                detectLocation();
             } else {
                 btn.textContent = "OFF";
                 btn.classList.add("off");
-
                 gps_status.textContent = "GPS is OFF — Please enter your location manually.";
                 gps_status.style.color = "red";
 
-                manualInput.disabled = false;
                 manualInput.style.opacity = "1";
-                manualInput.style.cursor = "text";
+                manualInput.placeholder = "Example: Tirupati Bus Stand";
 
+                // Clear GPS data so manual is forced if they type nothing
                 start_lat.value = "";
                 start_lon.value = "";
             }
