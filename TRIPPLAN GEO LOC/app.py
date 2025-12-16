@@ -15,7 +15,6 @@ from geopy.distance import geodesic
 from dotenv import load_dotenv
 
 load_dotenv()
-
 # ===============================
 # OpenRouteService API Key
 # ===============================
