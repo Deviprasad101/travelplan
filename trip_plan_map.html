@@ -150,42 +150,78 @@
     <div class="folium-map" id="map_e1f2f215c9044aabd1503e574063d7af"></div>
 
 
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // 1. Read Trip Data from LocalStorage
             const tripDataStr = localStorage.getItem('tripData');
-            if (tripDataStr) {
-                const tripData = JSON.parse(tripDataStr);
-                const lat = parseFloat(tripData.start_lat);
-                const lon = parseFloat(tripData.start_lon);
-                console.log("Updating Map Start Point:", lat, lon);
+            const selectedPlacesStr = localStorage.getItem('selectedPlaces');
 
-                if (!isNaN(lat) && !isNaN(lon)) {
-                    // Wait for map logic to initialize
+            if (tripDataStr && selectedPlacesStr) {
+                const tripData = JSON.parse(tripDataStr);
+                const places = JSON.parse(selectedPlacesStr);
+
+                const startLat = parseFloat(tripData.start_lat);
+                const startLon = parseFloat(tripData.start_lon);
+                console.log("Map Dynamic Update:", startLat, startLon, places.length + " places");
+
+                if (!isNaN(startLat) && !isNaN(startLon)) {
                     setTimeout(function () {
-                        // Find the map object
+                        // Find global map object
                         var mapName = Object.keys(window).find(k => k.startsWith("map_"));
                         var map = window[mapName];
 
-                        // Find the Blue 'Home' marker (Start Point)
-                        // It is usually the first marker added, or we search for the specific icon
+                        if (!map) return;
+
+                        // 1. UPDATE START MARKER (Blue Home Icon)
                         map.eachLayer(function (layer) {
                             if (layer instanceof L.Marker) {
+                                // Identify start marker by 'home' icon property (Leaflet Awesome Markers)
                                 if (layer.options.icon && layer.options.icon.options.icon === 'home') {
-                                    // Move marker to user's location
-                                    layer.setLatLng([lat, lon]);
-
-                                    // Update Popup
+                                    layer.setLatLng([startLat, startLon]);
                                     const locName = tripData.manual_location || "Your Start Location";
                                     layer.bindPopup(`<b>${locName}</b><br>Trip Starting Point`).openPopup();
-
-                                    // Center map
-                                    map.setView([lat, lon], 13);
                                 }
+                            }
+                            // 2. REMOVE OLD PATH (Remove existing AntPaths/Polylines)
+                            if (layer instanceof L.Polyline && !(layer instanceof L.Marker)) {
+                                // Assuming the static path is the only other major polyline
+                                map.removeLayer(layer);
                             }
                         });
 
-                    }, 1000); // 1 sec delay to ensure Leaflet is ready
+
+                        // 3. DRAW NEW PATH
+                        var pathPoints = [[startLat, startLon]];
+
+                        // Add all place coordinates in order
+                        places.forEach(p => {
+                            if (p.latitude && p.longitude) {
+                                pathPoints.push([parseFloat(p.latitude), parseFloat(p.longitude)]);
+                            }
+                        });
+
+                        // Draw Polyline (using AntPath if available, else standard)
+                        if (typeof L.polyline.antPath === 'function') {
+                            L.polyline.antPath(pathPoints, {
+                                "delay": 800,
+                                "dashArray": [10, 20],
+                                "weight": 6,
+                                "color": "#2563eb",
+                                "pulseColor": "#FFFFFF",
+                                "paused": false,
+                                "reverse": false,
+                                "hardwareAcceleration": true
+                            }).addTo(map);
+                        } else {
+                            L.polyline(pathPoints, { color: 'blue', weight: 5 }).addTo(map);
+                        }
+
+                        // 4. FIT BOUNDS
+                        var bounds = L.latLngBounds(pathPoints);
+                        map.fitBounds(bounds, { padding: [50, 50] });
+
+                    }, 1000);
                 }
             }
         });
