@@ -201,11 +201,11 @@ def generate_trip_pdf(selected_df, total_trip_days, total_trip_hours, trip_date,
 # ===============================================================
 @app.route('/')
 def info():
-    return render_template('info.html') # CORRECTED: File is in root
+    return render_template('index.html') # CORRECTED: Landing page
 
 @app.route('/plan')
 def plan_home():
-    return render_template('index.html')
+    return render_template('plan.html')
 
 # NEW ROUTE TO SERVE MAP FROM ROOT
 @app.route('/trip_plan_map.html')
