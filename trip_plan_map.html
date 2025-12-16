@@ -173,34 +173,66 @@
 
                         if (!map) return;
 
-                        // 1. UPDATE START MARKER (Blue Home Icon)
+
+                        // 1. UPDATE START MARKER (Blue Home Icon) & CLEAR OTHERS
                         map.eachLayer(function (layer) {
+                            // Detect Markers
                             if (layer instanceof L.Marker) {
-                                // Identify start marker by 'home' icon property (Leaflet Awesome Markers)
+                                // If it's the specific "Home" marker (Start Point)
                                 if (layer.options.icon && layer.options.icon.options.icon === 'home') {
+                                    // Update Start Position
                                     layer.setLatLng([startLat, startLon]);
                                     const locName = tripData.manual_location || "Your Start Location";
                                     layer.bindPopup(`<b>${locName}</b><br>Trip Starting Point`).openPopup();
+
+                                    // Keep this marker, don't remove
+                                } else {
+                                    // Remove all other static markers (old destination markers)
+                                    map.removeLayer(layer);
                                 }
                             }
-                            // 2. REMOVE OLD PATH (Remove existing AntPaths/Polylines)
+                            // Detect Old Paths (Polylines) & Remove
                             if (layer instanceof L.Polyline && !(layer instanceof L.Marker)) {
-                                // Assuming the static path is the only other major polyline
                                 map.removeLayer(layer);
                             }
                         });
 
 
+                        // 2. ADD NEW MARKERS FOR SELECTED PLACES
+                        var waypoints = [[startLon, startLat]];
 
-                        // 3. DRAW NEW PATH (OSRM Routing)
-                        var waypoints = [[startLon, startLat]]; // Note: OSRM uses Lon,Lat
-
-                        places.forEach(p => {
+                        places.forEach((p, index) => {
                             if (p.latitude && p.longitude) {
-                                waypoints.push([parseFloat(p.longitude), parseFloat(p.latitude)]);
+                                const lat = parseFloat(p.latitude);
+                                const lon = parseFloat(p.longitude);
+                                waypoints.push([lon, lat]); // For OSRM
+
+                                // Create Marker
+                                var redIcon = L.AwesomeMarkers.icon({
+                                    icon: 'info-sign',
+                                    markerColor: 'pink',
+                                    prefix: 'glyphicon',
+                                    iconColor: 'white'
+                                });
+
+                                var marker = L.marker([lat, lon], { icon: redIcon }).addTo(map);
+
+                                // Create Popup content
+                                var popupContent = `
+                                    <div style='width:200px; font-family:"Segoe UI", sans-serif;'>
+                                        <b style='color:#be185d'>${index + 1}. ${p['name of the place']}</b><br>
+                                        <span style='color:#555; font-size:12px;'>${p['category']}</span><br>
+                                        <hr style='border:0; border-top:1px solid #eee; margin:5px 0;'>
+                                        Visit: ${p.visit_start} - ${p.visit_end}<br>
+                                        Spend: ${p.spend_time_minutes} min
+                                    </div>
+                                `;
+                                marker.bindPopup(popupContent);
                             }
                         });
 
+
+                        // 3. FETCH & DRAW OSRM ROUTE
                         // Construct OSRM URL (Service: driving, Format: lon,lat;lon,lat...)
                         var coordsString = waypoints.map(pt => pt.join(',')).join(';');
                         var osrmUrl = `https://router.project-osrm.org/route/v1/driving/${coordsString}?overview=full&geometries=geojson`;
@@ -211,8 +243,8 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (data.routes && data.routes.length > 0) {
-                                    // Success: Draw Road Path
-                                    var routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]); // Flip back to Lat,Lon for Leaflet
+                                    // ... (Same drawing logic as before) ...
+                                    var routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]); // Flip back to Lat,Lon
 
                                     if (typeof L.polyline.antPath === 'function') {
                                         L.polyline.antPath(routeCoords, {
@@ -228,16 +260,16 @@
                                         L.polyline(routeCoords, { color: 'blue', weight: 5, opacity: 0.7 }).addTo(map);
                                     }
 
-                                    // Fit bounds to the road path
+                                    // Fit bounds
                                     map.fitBounds(L.polyline(routeCoords).getBounds(), { padding: [50, 50] });
                                 } else {
                                     throw new Error("No route found");
                                 }
                             })
                             .catch(err => {
-                                console.error("OSRM Error, falling back to straight lines:", err);
-                                // Fallback: Straight Lines
-                                var straightPath = waypoints.map(pt => [pt[1], pt[0]]); // Flip to Lat,Lon
+                                console.error("OSRM Error:", err);
+                                // Fallback
+                                var straightPath = waypoints.map(pt => [pt[1], pt[0]]);
                                 L.polyline(straightPath, { color: 'red', weight: 3, dashArray: '5, 10' }).addTo(map);
                                 map.fitBounds(L.latLngBounds(straightPath), { padding: [50, 50] });
                             });
