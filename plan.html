@@ -469,7 +469,7 @@
                 }
             }
 
-            // Store trip data in localStorage for result page (Optional backup)
+            // Store trip data in localStorage
             const tripData = {
                 start_lat: start_lat.value,
                 start_lon: start_lon.value,
@@ -481,12 +481,8 @@
             };
             localStorage.setItem('tripData', JSON.stringify(tripData));
 
-            // POPULATE HIDDEN INPUTS FOR FLASK
-            document.getElementById("start_time").value = start_hour.value + ":" + start_minute.value;
-            document.getElementById("end_time").value = end_hour.value + ":" + end_minute.value;
-
-            // Submit form to Flask Backend
-            trip_form.submit();
+            // Redirect to result page (GitHub Pages compatible)
+            window.location.href = "result.html";
         }
 
 
