@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Trip Planner - Results</title>
 
+    <!-- jsPDF Library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -222,9 +225,9 @@
                 <a class="btn btn-secondary" href="trip_plan_map.html" download="trip_plan_map.html">
                     Download Map
                 </a>
-                <a class="btn btn-secondary" href="static/trip_itinerary.pdf" download="trip_itinerary.pdf">
+                <button class="btn btn-secondary" onclick="generatePDF()" style="border:none; cursor:pointer;">
                     Download Trip PDF
-                </a>
+                </button>
             </div>
 
 
@@ -327,6 +330,95 @@
                 document.getElementById('total-places').textContent = 'Error loading';
                 document.getElementById('places-list').innerHTML = '<li style="padding:20px; text-align:center; color:#666;">Error loading places data.</li>';
             }
+        }
+
+        // PDF Generation Function
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Get trip data
+            const tripDataStr = localStorage.getItem('tripData');
+            const tripData = tripDataStr ? JSON.parse(tripDataStr) : {};
+
+            // Title
+            doc.setFontSize(20);
+            doc.setTextColor(76, 29, 149);
+            doc.text('Trip Itinerary', 105, 20, { align: 'center' });
+
+            doc.setFontSize(12);
+            doc.setTextColor(107, 33, 168);
+            doc.text('Powered by Geo-Intel Lab', 105, 28, { align: 'center' });
+
+            // Trip Summary
+            doc.setFontSize(14);
+            doc.setTextColor(0, 86, 179);
+            doc.text('Trip Summary', 20, 45);
+
+            doc.setFontSize(11);
+            doc.setTextColor(0, 0, 0);
+            let y = 55;
+
+            const totalPlaces = document.getElementById('total-places').textContent;
+            const totalDays = document.getElementById('total-days').textContent;
+            const totalHours = document.getElementById('total-hours').textContent;
+            const hoursPerDay = document.getElementById('hours-per-day').textContent;
+
+            doc.text(`Total Places Selected: ${totalPlaces}`, 20, y);
+            y += 8;
+            doc.text(`Total Days: ${totalDays}`, 20, y);
+            y += 8;
+            doc.text(`Total Trip Hours: ${totalHours} hours`, 20, y);
+            y += 8;
+            doc.text(`Hours Per Day: ${hoursPerDay} hours`, 20, y);
+            y += 8;
+            doc.text(`Trip Date: ${tripData.trip_date || 'Not specified'}`, 20, y);
+            y += 15;
+
+            // Selected Places
+            doc.setFontSize(14);
+            doc.setTextColor(0, 86, 179);
+            doc.text('Selected Places', 20, y);
+            y += 10;
+
+            doc.setFontSize(10);
+            doc.setTextColor(0, 0, 0);
+
+            // Get places from the list
+            const placeItems = document.querySelectorAll('.place-item');
+            placeItems.forEach((item, index) => {
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                }
+
+                const placeName = item.querySelector('.place-name').textContent;
+                const fields = item.querySelectorAll('.field-row');
+
+                doc.setFont(undefined, 'bold');
+                doc.text(placeName, 20, y);
+                y += 6;
+
+                doc.setFont(undefined, 'normal');
+                fields.forEach(field => {
+                    const label = field.querySelector('.field-label').textContent;
+                    const value = field.querySelector('.field-value').textContent;
+                    const text = `${label} ${value}`;
+
+                    if (y > 280) {
+                        doc.addPage();
+                        y = 20;
+                    }
+
+                    doc.text(text, 25, y);
+                    y += 5;
+                });
+
+                y += 5; // Space between places
+            });
+
+            // Save PDF
+            doc.save('trip_itinerary.pdf');
         }
     </script>
 
