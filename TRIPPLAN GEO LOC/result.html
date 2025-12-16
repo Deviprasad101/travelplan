@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Trip Planner - Results</title>
+
+    <!-- ========================================================= -->
+    <!-- 2️⃣ GLOBAL & LAYOUT STYLES                                -->
+    <!-- ========================================================= -->
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #fdf2ff, #e0f2fe);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* --------------------------------------------------------- */
+        /* 2.1 HEADER STYLES                                         */
+        /* --------------------------------------------------------- */
+        .site-header {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            padding: 24px 0;
+            color: white;
+            text-align: center;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+        }
+
+        .site-header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        main {
+            margin-top: 30px;
+            margin-bottom: 60px;
+        }
+
+        /* --------------------------------------------------------- */
+        /* 2.2 CARD STYLES                                           */
+        /* --------------------------------------------------------- */
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 18px;
+            box-shadow: 0 6px 24px rgba(15, 23, 42, 0.12);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #4c1d95;
+        }
+
+        /* --------------------------------------------------------- */
+        /* 2.3 TRIP SUMMARY SECTION                                  */
+        /* --------------------------------------------------------- */
+        .trip-summary p {
+            margin: 4px 0;
+        }
+
+        /* --------------------------------------------------------- */
+        /* 2.4 PLACES LIST & ITEMS                                   */
+        /* --------------------------------------------------------- */
+        .places-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .place-item {
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            background: #f9fafb;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+        }
+
+        .place-name {
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #111827;
+        }
+
+        .field-row {
+            display: flex;
+            gap: 6px;
+            font-size: 14px;
+        }
+
+        .field-label {
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .field-value {
+            color: #111827;
+        }
+
+        /* --------------------------------------------------------- */
+        /* 2.5 ACTION BUTTONS                                        */
+        /* --------------------------------------------------------- */
+        .actions {
+            margin-top: 16px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 18px;
+            margin-right: 10px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(34, 197, 94, 0.6);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 6px 18px rgba(249, 115, 22, 0.6);
+        }
+
+        /* --------------------------------------------------------- */
+        /* 2.6 NAVIGATION BUTTONS                                    */
+        /* --------------------------------------------------------- */
+        .nav-button {
+            position: fixed;
+            bottom: 20px;
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-nav {
+            left: 20px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+        }
+
+        .next-nav {
+            right: 20px;
+            background: linear-gradient(135deg, #ec4899, #f97316);
+            color: white;
+        }
+
+        @media (max-width: 640px) {
+            .nav-button {
+                bottom: 15px;
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+
+            .back-nav {
+                left: 10px;
+            }
+
+            .next-nav {
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ========================================================= -->
+    <!-- 3️⃣ HEADER SECTION                                         -->
+    <!-- ========================================================= -->
+    <header class="site-header">
+        <div class="container">
+            <h1>Trip Planner - Results</h1>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ========================================================= -->
+        <!-- 4️⃣ TRIP SUMMARY CARD                                     -->
+        <!-- ========================================================= -->
+        <section class="card">
+
+            <h2>Trip Planned Successfully ✅</h2>
+
+            <!-- Trip Summary Box -->
+            <div class="summary-box" style="
+                    background: #f2f8ff;
+                    padding: 20px;
+                    border-radius: 12px;
+                    margin-bottom: 25px;
+                    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+                ">
+
+                <h2 style="margin-top: 0; color: #0056b3;">Trip Summary</h2>
+
+                <p><strong>Total Places Selected:</strong> {{ places|length }}</p>
+                <p><strong>Total Days:</strong> {{ total_trip_days }}</p>
+                <p><strong>Total Trip Hours:</strong> {{ total_trip_hours }} hours</p>
+                <p><strong>Hours Per Day:</strong> {{ hours_per_day }} hours</p>
+
+            </div>
+
+
+            <!-- ========================================================= -->
+            <!-- 5️⃣ PLACES LIST SECTION                                     -->
+            <!-- ========================================================= -->
+            <div class="places-list">
+                <h3>Selected Places</h3>
+
+                {% if places %}
+                <ul class="places-items">
+                    {% for place in places %}
+                    <li class="place-item">
+
+                        <div class="place-name">{{ place['name of the place'] }}</div>
+
+                        <div class="field-row">
+                            <span class="field-label">Category:</span>
+                            <span class="field-value">{{ place['category'] }}</span>
+                        </div>
+
+                        <div class="field-row">
+                            <span class="field-label">Time:</span>
+                            <span class="field-value">{{ place['visit_start'] }} - {{ place['visit_end'] }}</span>
+                        </div>
+
+                        <div class="field-row">
+                            <span class="field-label">Spend:</span>
+                            <span class="field-value">{{ place['spend_time_minutes'] }} mins</span>
+                        </div>
+
+                        <div class="field-row">
+                            <span class="field-label">Distance:</span>
+                            <span class="field-value">{{ "%.2f"|format(place['distance_from_previous_km']) }} km</span>
+                        </div>
+
+                        <div class="field-row">
+                            <span class="field-label">Description:</span>
+                            <span class="field-value">{{ place['description'] }}</span>
+                        </div>
+
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- 6️⃣ ACTION BUTTONS (MAP + PDF)                             -->
+            <!-- ========================================================= -->
+            <div class="actions">
+                <a class="btn" href="{{ map_url }}">Open Trip Map</a>
+                <!-- GOOGLE MAPS OPEN BUTTON -->
+                <a class="btn" style="background: linear-gradient(135deg,#4285F4,#34A853);" href="{{ google_maps_url }}"
+                    target="_blank">
+                    Open in Google Maps
+                </a>
+
+
+                <!-- NEW DOWNLOAD MAP BUTTON -->
+                <a class="btn btn-secondary" href="{{ map_url }}" download="trip_plan_map.html">
+                    Download Map
+                </a>
+
+                <a class="btn btn-secondary" href="{{ pdf_url }}" download>Download Trip PDF</a>
+            </div>
+
+
+        </section>
+    </main>
+
+    <!-- ========================================================= -->
+    <!-- 7️⃣ FIXED NAVIGATION BUTTONS (Back & Next)                 -->
+    <!-- ========================================================= -->
+    <a href="javascript:history.back()" class="nav-button back-nav">← Back</a>
+    <a href="{{ map_url }}" class="nav-button next-nav">Next →</a>
+
+</body>
+
+</html>
