@@ -1,4 +1,4 @@
-# Trip Planner - GitHub Pages Setup
+# Trip Planner - GitHub Pages
 
 ## 📁 File Structure
 
@@ -12,68 +12,72 @@ travelplan/
 │   ├── images/            # Images
 │   └── videos/            # Videos
 ├── tirupati_places_final_updated.csv
-└── TRIPPLAN GEO LOC/      # Original Flask app (for local development)
-    └── app.py
+├── TRIPPLAN GEO LOC/      # Flask backend (optional)
+│   └── app.py
+└── README.md
 ```
 
-## 🌐 GitHub Pages Navigation Flow
+## 🌐 Navigation Flow
 
-1. **index.html** - First page (Info/Welcome page)
-2. **plan.html** - Second page (Trip planner form)
-3. **result.html** - Third page (Results and map)
+1. **index.html** - Landing page (Info/Welcome)
+2. **plan.html** - Trip planner form
+3. **result.html** - Results and map
 
-## 🚀 Deployment Instructions
+## 🚀 GitHub Pages Deployment
 
-### For GitHub Pages (Static Site):
+### Your site is live at:
+`https://deviprasad101.github.io/travelplan/`
 
-1. **Commit all files** in the root directory:
+### To update your site:
+
+1. **Make changes** to HTML files
+2. **Commit and push**:
    ```bash
-   git add index.html plan.html result.html static/ tirupati_places_final_updated.csv
-   git commit -m "Setup GitHub Pages with proper navigation flow"
+   git add .
+   git commit -m "Update site"
    git push origin main
    ```
+3. **Wait 1-2 minutes** for GitHub Pages to rebuild
+4. **Refresh** your site URL
 
-2. **Configure GitHub Pages**:
-   - Go to your repository settings
-   - Navigate to "Pages" section
-   - Set source to "Deploy from a branch"
-   - Select branch: `main`
-   - Select folder: `/ (root)`
-   - Click Save
+## 📝 How It Works
 
-3. **Access your site**:
-   - Your site will be available at: `https://[username].github.io/travelplan/`
-   - It will automatically open `index.html` first
+- **GitHub Pages** automatically serves `index.html` as the landing page
+- All files use **static paths** (e.g., `static/images/logo.jpg`)
+- Navigation uses **relative links** (e.g., `plan.html`, `result.html`)
+- No backend required - fully static site
 
-### For Local Development (Flask App):
+## 🔧 Optional: Local Flask Backend
 
-1. Navigate to the Flask app directory:
+If you want to run the Flask backend locally for trip planning:
+
+1. Navigate to Flask directory:
    ```bash
    cd "TRIPPLAN GEO LOC"
    ```
 
-2. Run the Flask app:
+2. Install dependencies:
+   ```bash
+   pip install flask pandas geopandas folium requests geopy reportlab python-dotenv
+   ```
+
+3. Run the app:
    ```bash
    python app.py
    ```
 
-3. Access at: `http://localhost:5000`
+4. Access at: `http://localhost:5000`
 
 ## ⚠️ Important Notes
 
-- **GitHub Pages** uses the files in the **root directory** (`index.html`, `plan.html`, `result.html`)
-- **Flask app** uses files in the **TRIPPLAN GEO LOC** subdirectory
-- Keep both versions in sync if you make changes
-- The root HTML files use **static paths** (e.g., `static/images/...`)
-- The subdirectory HTML files use **Flask templates** (e.g., `{{ url_for(...) }}`)
+- The site works as a **static site** on GitHub Pages
+- Trip planning features require the **Flask backend** (local only)
+- Keep `static/` folder and CSV file in the root
+- All image/video paths use `static/` prefix
 
-## 🔧 Troubleshooting
+## 🎯 Quick Links
 
-**Problem**: GitHub Pages shows wrong page first
-- **Solution**: Ensure `index.html` is in the repository root
+- **Live Site**: https://deviprasad101.github.io/travelplan/
+- **Repository**: https://github.com/Deviprasad101/travelplan
+- **Issues**: Report bugs in GitHub Issues
 
-**Problem**: Images not loading on GitHub Pages
-- **Solution**: Check that `static/` folder is in the root and paths are correct
-
-**Problem**: Navigation not working
-- **Solution**: Verify links use relative paths (`plan.html`, not `/plan`)
