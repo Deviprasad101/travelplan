@@ -1,516 +1,570 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
-    
-            <meta name="viewport" content="width=device-width,
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css" />
+
+    <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <style>
-                #map_e1f2f215c9044aabd1503e574063d7af {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            </style>
+    <style>
+        #map_e1f2f215c9044aabd1503e574063d7af {
+            position: relative;
+            width: 100.0%;
+            height: 100.0%;
+            left: 0.0%;
+            top: 0.0%;
+        }
 
-            <style>html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            </style>
+        .leaflet-container {
+            font-size: 1rem;
+        }
+    </style>
 
-            <style>#map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-                }
-            </style>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 
-            <script>
-                L_NO_TOUCH = false;
-                L_DISABLE_3D = false;
-            </script>
+    <style>
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+    </style>
 
-        
+    <script>
+        L_NO_TOUCH = false;
+        L_DISABLE_3D = false;
+    </script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/leaflet-ant-path@1.1.2/dist/leaflet-ant-path.min.js"></script>
 </head>
+
 <body>
-    
-    
-        <style>
-            /* Back Button Styling */
-            .back-btn-map {
-                position: fixed;
-                bottom: 20px;
-                left: 20px;
-                z-index: 9999;
-                background: linear-gradient(135deg, #6366f1, #4f46e5);
-                color: white;
-                border: none;
-                padding: 12px 24px;
-                font-size: 16px;
-                font-family: 'Segoe UI', sans-serif;
-                font-weight: 600;
-                cursor: pointer;
-                border-radius: 50px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-                transition: transform 0.2s, box-shadow 0.2s;
-            }
-            .back-btn-map:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-            }
-        </style>
 
-        <!-- Back Button -->
-        <button class="back-btn-map" onclick="history.back()">&#8592; Back</button>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                var attempt = 0;
-                var maxAttempts = 20; // Try for 10 seconds
-                
-                var checkMap = setInterval(function() {
-                    attempt++;
-                    
-                    // Locate the Leaflet map object globally
-                    var mapName = Object.keys(window).find(k => k.startsWith("map_"));
-                    var map = window[mapName];
+    <style>
+        /* Back Button Styling */
+        .back-btn-map {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9999;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
 
-                    if (map && map.eachLayer) {
-                        clearInterval(checkMap);
-                        console.log("Map object found:", mapName);
+        .back-btn-map:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+    </style>
 
-                        map.eachLayer(function(layer) {
-                            if (layer instanceof L.Marker) {
-                                if (layer.options && layer.options.icon && layer.options.icon.options) {
-                                    var opts = layer.options.icon.options;
-                                    
-                                    // Target info-sign markers
-                                    if (opts.icon === 'info-sign') {
-                                        layer.on('click', function(e) {
-                                            var currentIcon = this.getIcon();
-                                            var curColor = currentIcon.options.markerColor;
-                                            var newColor = (curColor === 'pink') ? 'blue' : 'pink';
+    <!-- Back Button -->
+    <button class="back-btn-map" onclick="history.back()">&#8592; Back</button>
 
-                                            var newIcon = L.AwesomeMarkers.icon({
-                                                icon: 'info-sign',
-                                                markerColor: newColor,
-                                                prefix: 'glyphicon',
-                                                iconColor: 'white'
-                                            });
-                                            this.setIcon(newIcon);
-                                            this.openPopup();
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var attempt = 0;
+            var maxAttempts = 20; // Try for 10 seconds
+
+            var checkMap = setInterval(function () {
+                attempt++;
+
+                // Locate the Leaflet map object globally
+                var mapName = Object.keys(window).find(k => k.startsWith("map_"));
+                var map = window[mapName];
+
+                if (map && map.eachLayer) {
+                    clearInterval(checkMap);
+                    console.log("Map object found:", mapName);
+
+                    map.eachLayer(function (layer) {
+                        if (layer instanceof L.Marker) {
+                            if (layer.options && layer.options.icon && layer.options.icon.options) {
+                                var opts = layer.options.icon.options;
+
+                                // Target info-sign markers
+                                if (opts.icon === 'info-sign') {
+                                    layer.on('click', function (e) {
+                                        var currentIcon = this.getIcon();
+                                        var curColor = currentIcon.options.markerColor;
+                                        var newColor = (curColor === 'pink') ? 'blue' : 'pink';
+
+                                        var newIcon = L.AwesomeMarkers.icon({
+                                            icon: 'info-sign',
+                                            markerColor: newColor,
+                                            prefix: 'glyphicon',
+                                            iconColor: 'white'
                                         });
-                                    }
+                                        this.setIcon(newIcon);
+                                        this.openPopup();
+                                    });
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    if (attempt >= maxAttempts) {
+                        clearInterval(checkMap);
+                        console.error("Leaflet map object not found after retries.");
+                    }
+                }
+            }, 500); // Check every 500ms
+        });
+    </script>
+
+
+    <div class="folium-map" id="map_e1f2f215c9044aabd1503e574063d7af"></div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 1. Read Trip Data from LocalStorage
+            const tripDataStr = localStorage.getItem('tripData');
+            if (tripDataStr) {
+                const tripData = JSON.parse(tripDataStr);
+                const lat = parseFloat(tripData.start_lat);
+                const lon = parseFloat(tripData.start_lon);
+                console.log("Updating Map Start Point:", lat, lon);
+
+                if (!isNaN(lat) && !isNaN(lon)) {
+                    // Wait for map logic to initialize
+                    setTimeout(function () {
+                        // Find the map object
+                        var mapName = Object.keys(window).find(k => k.startsWith("map_"));
+                        var map = window[mapName];
+
+                        // Find the Blue 'Home' marker (Start Point)
+                        // It is usually the first marker added, or we search for the specific icon
+                        map.eachLayer(function (layer) {
+                            if (layer instanceof L.Marker) {
+                                if (layer.options.icon && layer.options.icon.options.icon === 'home') {
+                                    // Move marker to user's location
+                                    layer.setLatLng([lat, lon]);
+
+                                    // Update Popup
+                                    const locName = tripData.manual_location || "Your Start Location";
+                                    layer.bindPopup(`<b>${locName}</b><br>Trip Starting Point`).openPopup();
+
+                                    // Center map
+                                    map.setView([lat, lon], 13);
                                 }
                             }
                         });
-                    } else {
-                        if (attempt >= maxAttempts) {
-                            clearInterval(checkMap);
-                            console.error("Leaflet map object not found after retries.");
-                        }
-                    }
-                }, 500); // Check every 500ms
-            });
-        </script>
-        
-    
-            <div class="folium-map" id="map_e1f2f215c9044aabd1503e574063d7af" ></div>
-        
+
+                    }, 1000); // 1 sec delay to ensure Leaflet is ready
+                }
+            }
+        });
+    </script>
 </body>
 <script>
-    
-    
-            var map_e1f2f215c9044aabd1503e574063d7af = L.map(
-                "map_e1f2f215c9044aabd1503e574063d7af",
-                {
-                    center: [13.7061111, 79.5933412],
-                    crs: L.CRS.EPSG3857,
-                    ...{
-  "zoom": 13,
-  "zoomControl": true,
-  "preferCanvas": false,
-}
 
-                }
-            );
 
-            
+    var map_e1f2f215c9044aabd1503e574063d7af = L.map(
+        "map_e1f2f215c9044aabd1503e574063d7af",
+        {
+            center: [13.7061111, 79.5933412],
+            crs: L.CRS.EPSG3857,
+            ...{
+                "zoom": 13,
+                "zoomControl": true,
+                "preferCanvas": false,
+            }
 
-        
-    
-            var tile_layer_82a28963d1bf15c2f257c8065af24bc8 = L.tileLayer(
-                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                {
-  "minZoom": 0,
-  "maxZoom": 19,
-  "maxNativeZoom": 19,
-  "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
+        }
+    );
 
-            );
-        
-    
-            tile_layer_82a28963d1bf15c2f257c8065af24bc8.addTo(map_e1f2f215c9044aabd1503e574063d7af);
-        
-    
-            var marker_5ac24cb01f951f2cbc601f6dfb29bb4f = L.marker(
-                [13.7061111, 79.5933412],
-                {
-}
-            ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
-        
-    
-            var icon_1cfcb4a8b7329d1bd2632698943e1aec = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "home",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_ae9165bf57c83d08e928a3f014803096 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_df58aea97b2dffe289c72fb9df010dc0 = $(`<div id="html_df58aea97b2dffe289c72fb9df010dc0" style="width: 100.0%; height: 100.0%;"><b>Your Location</b><br>Trip Starting Point</div>`)[0];
-                popup_ae9165bf57c83d08e928a3f014803096.setContent(html_df58aea97b2dffe289c72fb9df010dc0);
-            
-        
 
-        marker_5ac24cb01f951f2cbc601f6dfb29bb4f.bindPopup(popup_ae9165bf57c83d08e928a3f014803096)
+
+
+    var tile_layer_82a28963d1bf15c2f257c8065af24bc8 = L.tileLayer(
+        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            "minZoom": 0,
+            "maxZoom": 19,
+            "maxNativeZoom": 19,
+            "noWrap": false,
+            "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+            "subdomains": "abc",
+            "detectRetina": false,
+            "tms": false,
+            "opacity": 1,
+        }
+
+    );
+
+
+    tile_layer_82a28963d1bf15c2f257c8065af24bc8.addTo(map_e1f2f215c9044aabd1503e574063d7af);
+
+
+    var marker_5ac24cb01f951f2cbc601f6dfb29bb4f = L.marker(
+        [13.7061111, 79.5933412],
+        {
+        }
+    ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
+
+
+    var icon_1cfcb4a8b7329d1bd2632698943e1aec = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "blue",
+            "iconColor": "white",
+            "icon": "home",
+            "prefix": "glyphicon",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_ae9165bf57c83d08e928a3f014803096 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_df58aea97b2dffe289c72fb9df010dc0 = $(`<div id="html_df58aea97b2dffe289c72fb9df010dc0" style="width: 100.0%; height: 100.0%;"><b>Your Location</b><br>Trip Starting Point</div>`)[0];
+    popup_ae9165bf57c83d08e928a3f014803096.setContent(html_df58aea97b2dffe289c72fb9df010dc0);
+
+
+
+    marker_5ac24cb01f951f2cbc601f6dfb29bb4f.bindPopup(popup_ae9165bf57c83d08e928a3f014803096)
         ;
 
-        
-    
-    
-                marker_5ac24cb01f951f2cbc601f6dfb29bb4f.setIcon(icon_1cfcb4a8b7329d1bd2632698943e1aec);
-            
-    
-            var marker_88196391ebe21acc17ebea28733d8b0d = L.marker(
-                [13.6355, 79.432],
-                {
-}
-            ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
-        
-    
-            var icon_d727d3437efd965790c2a6af55175d14 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "pink",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_af53d5828701c56850812edd52a9dc4c = L.popup({
-  "maxWidth": "100%",
-});
 
-        
-            
-                var html_01139593b6476d0ca67556eee02b050d = $(`<div id="html_01139593b6476d0ca67556eee02b050d" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>ISKCON Tirupati</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Temple</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>10:30 - 20:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>71 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>19.55 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular temple located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
-                popup_af53d5828701c56850812edd52a9dc4c.setContent(html_01139593b6476d0ca67556eee02b050d);
-            
-        
 
-        marker_88196391ebe21acc17ebea28733d8b0d.bindPopup(popup_af53d5828701c56850812edd52a9dc4c)
+
+    marker_5ac24cb01f951f2cbc601f6dfb29bb4f.setIcon(icon_1cfcb4a8b7329d1bd2632698943e1aec);
+
+
+    var marker_88196391ebe21acc17ebea28733d8b0d = L.marker(
+        [13.6355, 79.432],
+        {
+        }
+    ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
+
+
+    var icon_d727d3437efd965790c2a6af55175d14 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "pink",
+            "iconColor": "white",
+            "icon": "info-sign",
+            "prefix": "glyphicon",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_af53d5828701c56850812edd52a9dc4c = L.popup({
+        "maxWidth": "100%",
+    });
+
+
+
+    var html_01139593b6476d0ca67556eee02b050d = $(`<div id="html_01139593b6476d0ca67556eee02b050d" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>ISKCON Tirupati</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Temple</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>10:30 - 20:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>71 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>19.55 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular temple located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
+    popup_af53d5828701c56850812edd52a9dc4c.setContent(html_01139593b6476d0ca67556eee02b050d);
+
+
+
+    marker_88196391ebe21acc17ebea28733d8b0d.bindPopup(popup_af53d5828701c56850812edd52a9dc4c)
         ;
 
-        
-    
-    
-                marker_88196391ebe21acc17ebea28733d8b0d.setIcon(icon_d727d3437efd965790c2a6af55175d14);
-            
-    
-            var marker_31256b182e727c144c29d54c49984dc9 = L.marker(
-                [13.654, 79.421],
-                {
-}
-            ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
-        
-    
-            var icon_fb3f023b040a6dfabcc020b4c18de628 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "pink",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_af080d4a125c22f8f4b1e054eab1b33b = L.popup({
-  "maxWidth": "100%",
-});
 
-        
-            
-                var html_49db5475881cd13f1abb902ecd1f4373 = $(`<div id="html_49db5475881cd13f1abb902ecd1f4373" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>Kapila Theertham</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Temple / Waterfall</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>09:00 - 17:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>55 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>2.39 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular temple / waterfall located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
-                popup_af080d4a125c22f8f4b1e054eab1b33b.setContent(html_49db5475881cd13f1abb902ecd1f4373);
-            
-        
 
-        marker_31256b182e727c144c29d54c49984dc9.bindPopup(popup_af080d4a125c22f8f4b1e054eab1b33b)
+
+    marker_88196391ebe21acc17ebea28733d8b0d.setIcon(icon_d727d3437efd965790c2a6af55175d14);
+
+
+    var marker_31256b182e727c144c29d54c49984dc9 = L.marker(
+        [13.654, 79.421],
+        {
+        }
+    ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
+
+
+    var icon_fb3f023b040a6dfabcc020b4c18de628 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "pink",
+            "iconColor": "white",
+            "icon": "info-sign",
+            "prefix": "glyphicon",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_af080d4a125c22f8f4b1e054eab1b33b = L.popup({
+        "maxWidth": "100%",
+    });
+
+
+
+    var html_49db5475881cd13f1abb902ecd1f4373 = $(`<div id="html_49db5475881cd13f1abb902ecd1f4373" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>Kapila Theertham</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Temple / Waterfall</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>09:00 - 17:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>55 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>2.39 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular temple / waterfall located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
+    popup_af080d4a125c22f8f4b1e054eab1b33b.setContent(html_49db5475881cd13f1abb902ecd1f4373);
+
+
+
+    marker_31256b182e727c144c29d54c49984dc9.bindPopup(popup_af080d4a125c22f8f4b1e054eab1b33b)
         ;
 
-        
-    
-    
-                marker_31256b182e727c144c29d54c49984dc9.setIcon(icon_fb3f023b040a6dfabcc020b4c18de628);
-            
-    
-            var marker_c2d08cef80273ed0debe06b110c43af9 = L.marker(
-                [13.62, 79.43],
-                {
-}
-            ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
-        
-    
-            var icon_ea90f16f5657b7bc48a406e0c96954ef = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "pink",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_9ebdeeda68b814aaf2bfbbabb49a6875 = L.popup({
-  "maxWidth": "100%",
-});
 
-        
-            
-                var html_80e4b2ba78d166fc0ada58a3a7c612a5 = $(`<div id="html_80e4b2ba78d166fc0ada58a3a7c612a5" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>Sri Venkateswara Botanical Garden</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Park / Garden</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>09:00 - 17:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>82 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>3.90 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular park / garden located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
-                popup_9ebdeeda68b814aaf2bfbbabb49a6875.setContent(html_80e4b2ba78d166fc0ada58a3a7c612a5);
-            
-        
 
-        marker_c2d08cef80273ed0debe06b110c43af9.bindPopup(popup_9ebdeeda68b814aaf2bfbbabb49a6875)
+
+    marker_31256b182e727c144c29d54c49984dc9.setIcon(icon_fb3f023b040a6dfabcc020b4c18de628);
+
+
+    var marker_c2d08cef80273ed0debe06b110c43af9 = L.marker(
+        [13.62, 79.43],
+        {
+        }
+    ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
+
+
+    var icon_ea90f16f5657b7bc48a406e0c96954ef = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "pink",
+            "iconColor": "white",
+            "icon": "info-sign",
+            "prefix": "glyphicon",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_9ebdeeda68b814aaf2bfbbabb49a6875 = L.popup({
+        "maxWidth": "100%",
+    });
+
+
+
+    var html_80e4b2ba78d166fc0ada58a3a7c612a5 = $(`<div id="html_80e4b2ba78d166fc0ada58a3a7c612a5" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>Sri Venkateswara Botanical Garden</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Park / Garden</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>09:00 - 17:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>82 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>3.90 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular park / garden located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
+    popup_9ebdeeda68b814aaf2bfbbabb49a6875.setContent(html_80e4b2ba78d166fc0ada58a3a7c612a5);
+
+
+
+    marker_c2d08cef80273ed0debe06b110c43af9.bindPopup(popup_9ebdeeda68b814aaf2bfbbabb49a6875)
         ;
 
-        
-    
-    
-                marker_c2d08cef80273ed0debe06b110c43af9.setIcon(icon_ea90f16f5657b7bc48a406e0c96954ef);
-            
-    
-            var marker_491cbb2c3e55b5795d99fb531932a8e0 = L.marker(
-                [13.636, 79.421],
-                {
-}
-            ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
-        
-    
-            var icon_2406ff92959fd3dec555df6dc7547a56 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "pink",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_1236e07397a81e064801b488e36d0df2 = L.popup({
-  "maxWidth": "100%",
-});
 
-        
-            
-                var html_55da25a0f2d98e456b37272d226abe99 = $(`<div id="html_55da25a0f2d98e456b37272d226abe99" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>Srinivasa Kalyana Mandapam (Wedding hall / Landmark)</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Landmark</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>09:00 - 17:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>27 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>2.04 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular landmark located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
-                popup_1236e07397a81e064801b488e36d0df2.setContent(html_55da25a0f2d98e456b37272d226abe99);
-            
-        
 
-        marker_491cbb2c3e55b5795d99fb531932a8e0.bindPopup(popup_1236e07397a81e064801b488e36d0df2)
+
+    marker_c2d08cef80273ed0debe06b110c43af9.setIcon(icon_ea90f16f5657b7bc48a406e0c96954ef);
+
+
+    var marker_491cbb2c3e55b5795d99fb531932a8e0 = L.marker(
+        [13.636, 79.421],
+        {
+        }
+    ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
+
+
+    var icon_2406ff92959fd3dec555df6dc7547a56 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "pink",
+            "iconColor": "white",
+            "icon": "info-sign",
+            "prefix": "glyphicon",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_1236e07397a81e064801b488e36d0df2 = L.popup({
+        "maxWidth": "100%",
+    });
+
+
+
+    var html_55da25a0f2d98e456b37272d226abe99 = $(`<div id="html_55da25a0f2d98e456b37272d226abe99" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>Srinivasa Kalyana Mandapam (Wedding hall / Landmark)</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Landmark</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>09:00 - 17:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>27 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>2.04 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular landmark located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
+    popup_1236e07397a81e064801b488e36d0df2.setContent(html_55da25a0f2d98e456b37272d226abe99);
+
+
+
+    marker_491cbb2c3e55b5795d99fb531932a8e0.bindPopup(popup_1236e07397a81e064801b488e36d0df2)
         ;
 
-        
-    
-    
-                marker_491cbb2c3e55b5795d99fb531932a8e0.setIcon(icon_2406ff92959fd3dec555df6dc7547a56);
-            
-    
-            var marker_d97029c7cd41f0ed1b0c827157b10f00 = L.marker(
-                [13.6295, 79.423],
-                {
-}
-            ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
-        
-    
-            var icon_3b8d6151c3bb67ef6215cfc4210dd34b = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "pink",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_22c0d9ffc94b238de055f68b12670e1b = L.popup({
-  "maxWidth": "100%",
-});
 
-        
-            
-                var html_2a1c10cc5057e4fc1e2393a9830ba8f1 = $(`<div id="html_2a1c10cc5057e4fc1e2393a9830ba8f1" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>Annapurna Hotel / Vegetarian Meals</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Food</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>09:00 - 17:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>75 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>0.75 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular food located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
-                popup_22c0d9ffc94b238de055f68b12670e1b.setContent(html_2a1c10cc5057e4fc1e2393a9830ba8f1);
-            
-        
 
-        marker_d97029c7cd41f0ed1b0c827157b10f00.bindPopup(popup_22c0d9ffc94b238de055f68b12670e1b)
+
+    marker_491cbb2c3e55b5795d99fb531932a8e0.setIcon(icon_2406ff92959fd3dec555df6dc7547a56);
+
+
+    var marker_d97029c7cd41f0ed1b0c827157b10f00 = L.marker(
+        [13.6295, 79.423],
+        {
+        }
+    ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
+
+
+    var icon_3b8d6151c3bb67ef6215cfc4210dd34b = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "pink",
+            "iconColor": "white",
+            "icon": "info-sign",
+            "prefix": "glyphicon",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_22c0d9ffc94b238de055f68b12670e1b = L.popup({
+        "maxWidth": "100%",
+    });
+
+
+
+    var html_2a1c10cc5057e4fc1e2393a9830ba8f1 = $(`<div id="html_2a1c10cc5057e4fc1e2393a9830ba8f1" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>Annapurna Hotel / Vegetarian Meals</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Food</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>09:00 - 17:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>75 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>0.75 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular food located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
+    popup_22c0d9ffc94b238de055f68b12670e1b.setContent(html_2a1c10cc5057e4fc1e2393a9830ba8f1);
+
+
+
+    marker_d97029c7cd41f0ed1b0c827157b10f00.bindPopup(popup_22c0d9ffc94b238de055f68b12670e1b)
         ;
 
-        
-    
-    
-                marker_d97029c7cd41f0ed1b0c827157b10f00.setIcon(icon_3b8d6151c3bb67ef6215cfc4210dd34b);
-            
-    
-            var marker_9d5e4e0f71e45522282c381131d69eaf = L.marker(
-                [13.6315, 79.4205],
-                {
-}
-            ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
-        
-    
-            var icon_fc8ab8594d2df93a1d39a841c4fd0f45 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "pink",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_06d1a8b912eb63998edf460a3ea9fcaf = L.popup({
-  "maxWidth": "100%",
-});
 
-        
-            
-                var html_fff243bf58d8ed575f368aa66cf2d658 = $(`<div id="html_fff243bf58d8ed575f368aa66cf2d658" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>Hotel Woodlands (Veg Restaurant)</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Food</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>10:30 - 20:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>102 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>0.36 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular food located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
-                popup_06d1a8b912eb63998edf460a3ea9fcaf.setContent(html_fff243bf58d8ed575f368aa66cf2d658);
-            
-        
 
-        marker_9d5e4e0f71e45522282c381131d69eaf.bindPopup(popup_06d1a8b912eb63998edf460a3ea9fcaf)
+
+    marker_d97029c7cd41f0ed1b0c827157b10f00.setIcon(icon_3b8d6151c3bb67ef6215cfc4210dd34b);
+
+
+    var marker_9d5e4e0f71e45522282c381131d69eaf = L.marker(
+        [13.6315, 79.4205],
+        {
+        }
+    ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
+
+
+    var icon_fc8ab8594d2df93a1d39a841c4fd0f45 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "pink",
+            "iconColor": "white",
+            "icon": "info-sign",
+            "prefix": "glyphicon",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_06d1a8b912eb63998edf460a3ea9fcaf = L.popup({
+        "maxWidth": "100%",
+    });
+
+
+
+    var html_fff243bf58d8ed575f368aa66cf2d658 = $(`<div id="html_fff243bf58d8ed575f368aa66cf2d658" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>Hotel Woodlands (Veg Restaurant)</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Food</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>10:30 - 20:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>102 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>0.36 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular food located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
+    popup_06d1a8b912eb63998edf460a3ea9fcaf.setContent(html_fff243bf58d8ed575f368aa66cf2d658);
+
+
+
+    marker_9d5e4e0f71e45522282c381131d69eaf.bindPopup(popup_06d1a8b912eb63998edf460a3ea9fcaf)
         ;
 
-        
-    
-    
-                marker_9d5e4e0f71e45522282c381131d69eaf.setIcon(icon_fc8ab8594d2df93a1d39a841c4fd0f45);
-            
-    
-            var marker_3b3444772bb9569fe2ece985664741a7 = L.marker(
-                [13.63, 79.4205],
-                {
-}
-            ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
-        
-    
-            var icon_7979f8adc9113ad023fa449f604953d1 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "pink",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_b598b23cd4399c0a8ead58e1d73bb835 = L.popup({
-  "maxWidth": "100%",
-});
 
-        
-            
-                var html_21bc60a4e9c4931af1296c68450763cf = $(`<div id="html_21bc60a4e9c4931af1296c68450763cf" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>Sri Venkateswara Central Bus Station (TPS)</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Transit / Landmark</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>09:00 - 17:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>81 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>0.17 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular transit / landmark located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
-                popup_b598b23cd4399c0a8ead58e1d73bb835.setContent(html_21bc60a4e9c4931af1296c68450763cf);
-            
-        
 
-        marker_3b3444772bb9569fe2ece985664741a7.bindPopup(popup_b598b23cd4399c0a8ead58e1d73bb835)
+
+    marker_9d5e4e0f71e45522282c381131d69eaf.setIcon(icon_fc8ab8594d2df93a1d39a841c4fd0f45);
+
+
+    var marker_3b3444772bb9569fe2ece985664741a7 = L.marker(
+        [13.63, 79.4205],
+        {
+        }
+    ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
+
+
+    var icon_7979f8adc9113ad023fa449f604953d1 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "pink",
+            "iconColor": "white",
+            "icon": "info-sign",
+            "prefix": "glyphicon",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_b598b23cd4399c0a8ead58e1d73bb835 = L.popup({
+        "maxWidth": "100%",
+    });
+
+
+
+    var html_21bc60a4e9c4931af1296c68450763cf = $(`<div id="html_21bc60a4e9c4931af1296c68450763cf" style="width: 100.0%; height: 100.0%;">                 <div style='width:320px; font-family:"Segoe UI", sans-serif; padding:5px;'>                     <div style='border-bottom: 2px solid #ec4899; margin-bottom: 10px; padding-bottom: 5px;'>                         <h3 style='margin:0; color:#831843; font-size:16px;'>Sri Venkateswara Central Bus Station (TPS)</h3>                     </div>                      <table style='width:100%; border-collapse:collapse; font-size:13px;'>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top; width:90px;'>Category</td>                             <td style='padding:6px 0; color:#374151;'>Transit / Landmark</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Visit</td>                             <td style='padding:6px 0; color:#374151;'>09:00 - 17:00</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Spend</td>                             <td style='padding:6px 0; color:#374151;'>81 mins</td>                         </tr>                         <tr style='border-bottom: 1px solid #fce7f3;'>                             <td style='padding:6px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Distance</td>                             <td style='padding:6px 0; color:#374151;'>0.17 km</td>                         </tr>                         <tr>                             <td style='padding:8px 0; color:#9d174d; font-weight:600; vertical-align:top;'>Description</td>                             <td style='padding:8px 0; color:#4b5563; line-height:1.4;'>Popular transit / landmark located in Tirupati region</td>                         </tr>                     </table>                 </div>             </div>`)[0];
+    popup_b598b23cd4399c0a8ead58e1d73bb835.setContent(html_21bc60a4e9c4931af1296c68450763cf);
+
+
+
+    marker_3b3444772bb9569fe2ece985664741a7.bindPopup(popup_b598b23cd4399c0a8ead58e1d73bb835)
         ;
 
-        
-    
-    
-                marker_3b3444772bb9569fe2ece985664741a7.setIcon(icon_7979f8adc9113ad023fa449f604953d1);
-            
-    
-            ant_path_98b61d085dd362910297462705327774 = L.polyline.antPath(
-              [[13.706008, 79.593353], [13.705961, 79.592912], [13.706003, 79.59289], [13.706209, 79.592889], [13.706527, 79.592857], [13.707006, 79.592948], [13.707111, 79.592948], [13.707163, 79.592937], [13.707244, 79.59275], [13.706637, 79.592641], [13.705791, 79.592588], [13.705772, 79.592874], [13.705738, 79.593412], [13.705722, 79.593652], [13.705666, 79.594525], [13.705561, 79.59615], [13.701962, 79.595285], [13.700058, 79.594814], [13.698742, 79.594502], [13.697157, 79.594231], [13.696474, 79.594113], [13.695549, 79.593954], [13.695166, 79.593909], [13.694993, 79.593904], [13.694759, 79.593898], [13.694343, 79.593912], [13.694123, 79.593946], [13.693696, 79.594011], [13.693549, 79.593723], [13.693457, 79.593418], [13.693386, 79.593018], [13.69322, 79.591835], [13.693144, 79.59152], [13.693075, 79.591312], [13.692395, 79.589839], [13.691862, 79.588496], [13.691419, 79.587348], [13.691161, 79.586782], [13.690992, 79.58646], [13.690757, 79.586138], [13.690133, 79.585422], [13.690056, 79.5852], [13.68963, 79.58528], [13.689566, 79.585102], [13.689249, 79.584553], [13.688993, 79.584238], [13.687454, 79.582261], [13.685844, 79.579898], [13.684376, 79.577559], [13.683253, 79.575887], [13.683042, 79.575317], [13.682351, 79.574268], [13.681668, 79.573183], [13.680702, 79.571881], [13.680209, 79.57132], [13.67956, 79.570771], [13.679206, 79.570467], [13.678772, 79.570187], [13.67709, 79.569328], [13.674968, 79.568148], [13.673818, 79.567269], [13.673317, 79.56693], [13.673063, 79.56678], [13.672697, 79.56661], [13.672208, 79.566409], [13.671596, 79.566225], [13.667011, 79.565115], [13.666233, 79.564909], [13.665591, 79.564635], [13.665384, 79.564508], [13.665002, 79.564229], [13.664057, 79.563326], [13.663326, 79.562531], [13.66279, 79.56187], [13.662476, 79.561339], [13.662126, 79.560606], [13.661901, 79.560075], [13.66147, 79.559129], [13.66089, 79.557742], [13.659876, 79.555523], [13.659726, 79.55522], [13.658965, 79.553693], [13.658597, 79.55295], [13.658539, 79.552836], [13.657696, 79.551173], [13.657356, 79.550539], [13.656695, 79.54951], [13.656115, 79.548651], [13.655118, 79.547522], [13.653833, 79.54601], [13.651737, 79.54335], [13.651442, 79.542884], [13.650711, 79.541822], [13.650526, 79.541463], [13.650306, 79.541005], [13.649832, 79.539732], [13.649535, 79.538722], [13.64936, 79.537677], [13.649058, 79.535476], [13.648836, 79.534073], [13.648707, 79.533293], [13.648665, 79.532943], [13.648586, 79.532629], [13.648432, 79.532292], [13.648277, 79.532012], [13.648115, 79.531756], [13.647846, 79.531468], [13.647392, 79.531094], [13.646871, 79.530748], [13.645997, 79.530322], [13.644169, 79.529659], [13.642084, 79.528784], [13.64032, 79.528023], [13.638971, 79.527344], [13.638518, 79.527084], [13.637754, 79.526422], [13.63702, 79.525687], [13.636602, 79.525166], [13.635775, 79.523776], [13.635589, 79.523443], [13.634635, 79.521857], [13.633528, 79.519921], [13.632189, 79.517422], [13.632146, 79.51734], [13.631543, 79.51619], [13.63103, 79.51552], [13.63029, 79.514977], [13.629806, 79.514731], [13.62975, 79.514763], [13.629688, 79.514774], [13.629625, 79.514764], [13.629569, 79.514734], [13.629525, 79.514686], [13.6295, 79.514626], [13.628645, 79.514516], [13.628329, 79.514518], [13.627949, 79.514522], [13.62398, 79.514476], [13.623485, 79.514448], [13.622258, 79.514378], [13.622029, 79.514331], [13.62023, 79.513562], [13.619381, 79.513064], [13.618894, 79.512687], [13.618641, 79.512467], [13.617791, 79.511584], [13.617533, 79.511273], [13.617299, 79.510933], [13.616814, 79.510202], [13.616649, 79.509896], [13.616294, 79.509045], [13.616088, 79.508413], [13.615837, 79.507427], [13.615719, 79.507042], [13.615687, 79.506944], [13.615679, 79.506929], [13.615615, 79.506848], [13.615338, 79.506626], [13.615238, 79.50655], [13.615286, 79.506492], [13.615499, 79.506056], [13.61564, 79.505713], [13.615775, 79.505237], [13.615826, 79.504932], [13.61626, 79.501406], [13.61637, 79.500531], [13.616526, 79.499467], [13.616751, 79.497404], [13.616781, 79.497112], [13.616784, 79.497088], [13.616792, 79.496965], [13.61687, 79.495779], [13.616905, 79.494704], [13.616838, 79.493168], [13.616807, 79.492437], [13.616804, 79.492372], [13.616798, 79.491879], [13.616759, 79.490893], [13.616653, 79.488964], [13.616535, 79.486174], [13.616513, 79.485612], [13.616395, 79.482141], [13.616369, 79.481204], [13.61624, 79.478469], [13.616153, 79.476052], [13.616135, 79.475501], [13.616041, 79.473852], [13.615984, 79.47242], [13.615945, 79.471392], [13.615923, 79.470652], [13.61582, 79.468849], [13.615809, 79.468622], [13.61579, 79.468252], [13.615717, 79.46709], [13.615673, 79.466516], [13.615551, 79.465376], [13.615248, 79.463336], [13.615212, 79.463091], [13.614984, 79.461981], [13.614699, 79.460841], [13.614548, 79.460244], [13.614198, 79.459024], [13.614052, 79.458577], [13.61394, 79.45823], [13.613597, 79.457166], [13.613528, 79.456951], [13.613074, 79.45557], [13.612803, 79.45435], [13.612592, 79.452919], [13.612415, 79.45174], [13.612313, 79.450814], [13.612201, 79.450073], [13.612118, 79.449458], [13.6119, 79.448398], [13.611836, 79.447787], [13.611627, 79.445953], [13.611504, 79.444679], [13.611261, 79.443419], [13.611187, 79.443147], [13.611148, 79.44303], [13.611326, 79.442523], [13.611619, 79.441736], [13.611775, 79.441318], [13.612036, 79.440619], [13.612407, 79.439627], [13.612534, 79.439286], [13.613127, 79.437694], [13.61328, 79.437443], [13.613332, 79.437307], [13.613787, 79.436936], [13.614332, 79.436512], [13.614946, 79.436024], [13.61548, 79.435599], [13.615907, 79.435261], [13.616575, 79.434724], [13.61706, 79.434332], [13.617396, 79.434062], [13.617611, 79.433886], [13.617734, 79.433784], [13.617951, 79.433604], [13.618212, 79.433395], [13.618399, 79.433249], [13.618841, 79.432883], [13.619302, 79.432503], [13.619566, 79.432287], [13.622047, 79.430329], [13.622132, 79.430268], [13.622194, 79.430244], [13.622327, 79.430191], [13.622491, 79.43017], [13.622604, 79.430155], [13.62315, 79.430153], [13.623399, 79.430172], [13.623894, 79.430276], [13.624243, 79.430367], [13.624681, 79.430482], [13.626121, 79.430875], [13.626167, 79.43084], [13.62628, 79.430814], [13.62658, 79.430408], [13.62686, 79.430109], [13.627139, 79.429861], [13.627494, 79.429627], [13.627868, 79.429387], [13.628358, 79.429072], [13.628966, 79.428682], [13.629292, 79.428472], [13.629309, 79.428422], [13.629353, 79.42837], [13.629438, 79.428344], [13.62948, 79.428345], [13.629828, 79.428187], [13.630182, 79.428058], [13.630451, 79.427991], [13.630514, 79.427976], [13.630841, 79.427909], [13.631314, 79.427871], [13.631363, 79.427872], [13.633553, 79.427821], [13.634079, 79.427797], [13.63488, 79.427761], [13.634939, 79.42776], [13.634933, 79.427946], [13.634874, 79.427949], [13.634107, 79.427958], [13.63415, 79.428417], [13.634204, 79.428942], [13.634393, 79.428926], [13.634434, 79.428935], [13.634467, 79.428958], [13.634837, 79.429543], [13.634893, 79.429606], [13.635021, 79.429719], [13.635099, 79.429809], [13.635166, 79.429977], [13.635228, 79.430411], [13.635266, 79.430787], [13.635296, 79.431166], [13.635323, 79.431339], [13.63536, 79.431569], [13.63537, 79.431747], [13.635389, 79.432009], [13.63537, 79.431747], [13.636075, 79.431702], [13.636681, 79.431691], [13.636688, 79.431547], [13.636703, 79.431121], [13.636703, 79.431089], [13.636709, 79.430738], [13.636709, 79.430704], [13.636717, 79.430351], [13.636727, 79.429973], [13.636732, 79.429611], [13.636734, 79.429253], [13.636776, 79.428853], [13.636776, 79.428821], [13.636799, 79.428398], [13.636804, 79.428174], [13.636811, 79.427903], [13.635331, 79.427925], [13.634933, 79.427946], [13.634874, 79.427949], [13.63488, 79.427761], [13.634939, 79.42776], [13.635383, 79.427752], [13.635801, 79.427752], [13.635843, 79.427753], [13.636335, 79.427735], [13.636838, 79.427717], [13.637738, 79.427705], [13.638272, 79.427691], [13.638591, 79.427681], [13.638785, 79.427674], [13.639429, 79.427658], [13.64021, 79.427637], [13.641659, 79.427609], [13.641749, 79.427633], [13.641761, 79.42762], [13.641822, 79.427595], [13.641857, 79.427604], [13.641891, 79.427629], [13.642559, 79.427575], [13.643277, 79.427551], [13.643676, 79.427534], [13.644088, 79.427517], [13.644658, 79.427474], [13.645108, 79.427412], [13.645583, 79.427298], [13.645842, 79.427209], [13.645949, 79.427171], [13.64671, 79.42679], [13.64714, 79.42652], [13.647356, 79.426367], [13.647673, 79.426104], [13.648456, 79.425386], [13.648799, 79.425058], [13.649537, 79.42438], [13.649612, 79.424311], [13.64996, 79.423993], [13.650066, 79.423895], [13.650421, 79.423568], [13.650511, 79.423485], [13.650873, 79.423148], [13.652222, 79.421898], [13.652474, 79.421674], [13.652711, 79.421455], [13.653667, 79.42055], [13.653807, 79.420412], [13.653784, 79.420298], [13.653823, 79.420178], [13.653875, 79.420124], [13.653942, 79.420091], [13.654015, 79.420082], [13.654087, 79.420099], [13.65415, 79.42014], [13.654197, 79.4202], [13.654221, 79.420274], [13.65422, 79.420351], [13.654194, 79.420424], [13.654145, 79.420483], [13.654308, 79.420609], [13.654413, 79.420633], [13.654345, 79.421059], [13.654413, 79.420633], [13.654308, 79.420609], [13.654145, 79.420483], [13.654046, 79.420531], [13.653937, 79.420525], [13.653887, 79.420501], [13.653741, 79.420638], [13.652976, 79.421351], [13.652778, 79.421536], [13.652677, 79.421629], [13.650936, 79.423222], [13.650098, 79.423982], [13.649782, 79.424305], [13.649657, 79.424441], [13.649581, 79.424477], [13.648936, 79.42508], [13.647556, 79.426325], [13.647114, 79.426671], [13.646628, 79.426962], [13.645983, 79.427265], [13.645786, 79.427336], [13.645085, 79.427494], [13.644723, 79.42755], [13.644094, 79.427594], [13.641105, 79.427725], [13.637669, 79.427795], [13.635961, 79.427858], [13.635808, 79.427941], [13.632029, 79.428098], [13.631869, 79.428029], [13.631115, 79.428051], [13.630563, 79.428143], [13.63049, 79.428159], [13.630208, 79.428244], [13.629878, 79.428384], [13.629591, 79.428531], [13.629586, 79.428552], [13.629527, 79.428629], [13.629481, 79.42865], [13.629431, 79.428654], [13.628443, 79.429243], [13.627962, 79.429544], [13.627506, 79.42983], [13.62707, 79.430182], [13.626983, 79.430267], [13.626836, 79.430411], [13.62677, 79.430476], [13.626444, 79.430918], [13.626468, 79.430983], [13.626471, 79.431051], [13.626453, 79.431117], [13.626415, 79.431174], [13.626361, 79.431215], [13.626299, 79.431236], [13.626234, 79.431236], [13.626173, 79.431215], [13.62612, 79.431176], [13.62607, 79.431091], [13.626063, 79.430992], [13.625731, 79.43089], [13.624743, 79.430625], [13.624344, 79.430518], [13.623919, 79.430406], [13.623559, 79.430323], [13.623278, 79.43041], [13.622624, 79.43041], [13.62252, 79.43041], [13.62236, 79.430436], [13.622154, 79.430497], [13.621597, 79.430914], [13.621218, 79.431216], [13.619418, 79.432678], [13.619302, 79.432503], [13.618683, 79.431457], [13.618577, 79.43105], [13.618553, 79.430862], [13.618532, 79.430632], [13.618531, 79.430291], [13.61852, 79.430105], [13.618635, 79.430088], [13.618645, 79.429899], [13.618818, 79.429884], [13.619494, 79.429862], [13.619597, 79.429841], [13.619639, 79.429793], [13.619597, 79.429841], [13.619494, 79.429862], [13.618818, 79.429884], [13.618645, 79.429899], [13.618635, 79.430088], [13.61852, 79.430105], [13.618531, 79.430291], [13.618532, 79.430632], [13.618553, 79.430862], [13.618577, 79.43105], [13.618683, 79.431457], [13.619302, 79.432503], [13.619566, 79.432287], [13.622047, 79.430329], [13.622132, 79.430268], [13.622194, 79.430244], [13.622327, 79.430191], [13.622491, 79.43017], [13.622604, 79.430155], [13.62315, 79.430153], [13.623399, 79.430172], [13.623894, 79.430276], [13.624243, 79.430367], [13.624681, 79.430482], [13.626121, 79.430875], [13.626167, 79.43084], [13.62628, 79.430814], [13.62658, 79.430408], [13.62686, 79.430109], [13.627139, 79.429861], [13.627494, 79.429627], [13.627868, 79.429387], [13.628358, 79.429072], [13.628966, 79.428682], [13.629292, 79.428472], [13.629309, 79.428422], [13.629353, 79.42837], [13.629438, 79.428344], [13.62948, 79.428345], [13.629828, 79.428187], [13.630182, 79.428058], [13.630451, 79.427991], [13.630514, 79.427976], [13.630841, 79.427909], [13.631314, 79.427871], [13.631363, 79.427872], [13.633553, 79.427821], [13.634079, 79.427797], [13.63488, 79.427761], [13.634914, 79.426525], [13.634979, 79.425507], [13.634987, 79.425343], [13.635067, 79.425002], [13.635142, 79.424778], [13.635218, 79.424538], [13.635259, 79.424394], [13.635283, 79.424233], [13.635372, 79.423449], [13.635305, 79.423412], [13.635273, 79.423324], [13.635309, 79.423239], [13.635393, 79.423204], [13.635501, 79.422998], [13.635613, 79.422831], [13.636008, 79.422161], [13.635843, 79.422068], [13.635854, 79.421981], [13.635986, 79.420998], [13.635854, 79.421981], [13.635843, 79.422068], [13.635014, 79.421573], [13.634888, 79.421508], [13.634443, 79.421291], [13.633847, 79.42097], [13.633643, 79.420845], [13.633449, 79.420725], [13.632319, 79.420044], [13.632008, 79.419854], [13.631996, 79.419846], [13.631966, 79.419831], [13.63174, 79.419695], [13.631212, 79.419535], [13.631224, 79.419935], [13.63124, 79.420658], [13.631248, 79.421044], [13.631265, 79.421447], [13.631267, 79.421928], [13.631275, 79.422326], [13.631277, 79.422401], [13.631275, 79.422878], [13.63121, 79.423082], [13.631142, 79.423171], [13.631014, 79.423225], [13.630844, 79.423301], [13.630669, 79.42338], [13.630604, 79.423411], [13.629897, 79.423736], [13.629912, 79.423009], [13.629897, 79.423736], [13.630604, 79.423411], [13.630669, 79.42338], [13.630844, 79.423301], [13.631014, 79.423225], [13.631142, 79.423171], [13.63121, 79.423082], [13.631275, 79.422878], [13.631277, 79.422401], [13.631275, 79.422326], [13.631267, 79.421928], [13.631265, 79.421447], [13.631446, 79.421408], [13.631698, 79.420709], [13.631741, 79.420592], [13.632008, 79.419854], [13.631996, 79.419846], [13.631966, 79.419831], [13.63174, 79.419695], [13.631212, 79.419535], [13.631137, 79.419506], [13.630705, 79.419447], [13.630136, 79.41939], [13.62976, 79.419366], [13.629761, 79.420049], [13.629905, 79.420136], [13.629964, 79.420196], [13.629977, 79.420252], [13.629969, 79.420499]],
-              {
-  "stroke": true,
-  "color": "#2563eb",
-  "weight": 6,
-  "opacity": 0.9,
-  "lineCap": "round",
-  "lineJoin": "round",
-  "dashArray": [
-10,
-20,
-],
-  "dashOffset": null,
-  "fill": false,
-  "fillColor": "#2563eb",
-  "fillOpacity": 0.2,
-  "fillRule": "evenodd",
-  "bubblingMouseEvents": true,
-  "smoothFactor": 1.0,
-  "noClip": false,
-  "paused": false,
-  "reverse": false,
-  "hardwareAcceleration": false,
-  "delay": 800,
-  "pulseColor": "#FFFFFF",
-}
-        ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
-        
+
+
+
+    marker_3b3444772bb9569fe2ece985664741a7.setIcon(icon_7979f8adc9113ad023fa449f604953d1);
+
+
+    ant_path_98b61d085dd362910297462705327774 = L.polyline.antPath(
+        [[13.706008, 79.593353], [13.705961, 79.592912], [13.706003, 79.59289], [13.706209, 79.592889], [13.706527, 79.592857], [13.707006, 79.592948], [13.707111, 79.592948], [13.707163, 79.592937], [13.707244, 79.59275], [13.706637, 79.592641], [13.705791, 79.592588], [13.705772, 79.592874], [13.705738, 79.593412], [13.705722, 79.593652], [13.705666, 79.594525], [13.705561, 79.59615], [13.701962, 79.595285], [13.700058, 79.594814], [13.698742, 79.594502], [13.697157, 79.594231], [13.696474, 79.594113], [13.695549, 79.593954], [13.695166, 79.593909], [13.694993, 79.593904], [13.694759, 79.593898], [13.694343, 79.593912], [13.694123, 79.593946], [13.693696, 79.594011], [13.693549, 79.593723], [13.693457, 79.593418], [13.693386, 79.593018], [13.69322, 79.591835], [13.693144, 79.59152], [13.693075, 79.591312], [13.692395, 79.589839], [13.691862, 79.588496], [13.691419, 79.587348], [13.691161, 79.586782], [13.690992, 79.58646], [13.690757, 79.586138], [13.690133, 79.585422], [13.690056, 79.5852], [13.68963, 79.58528], [13.689566, 79.585102], [13.689249, 79.584553], [13.688993, 79.584238], [13.687454, 79.582261], [13.685844, 79.579898], [13.684376, 79.577559], [13.683253, 79.575887], [13.683042, 79.575317], [13.682351, 79.574268], [13.681668, 79.573183], [13.680702, 79.571881], [13.680209, 79.57132], [13.67956, 79.570771], [13.679206, 79.570467], [13.678772, 79.570187], [13.67709, 79.569328], [13.674968, 79.568148], [13.673818, 79.567269], [13.673317, 79.56693], [13.673063, 79.56678], [13.672697, 79.56661], [13.672208, 79.566409], [13.671596, 79.566225], [13.667011, 79.565115], [13.666233, 79.564909], [13.665591, 79.564635], [13.665384, 79.564508], [13.665002, 79.564229], [13.664057, 79.563326], [13.663326, 79.562531], [13.66279, 79.56187], [13.662476, 79.561339], [13.662126, 79.560606], [13.661901, 79.560075], [13.66147, 79.559129], [13.66089, 79.557742], [13.659876, 79.555523], [13.659726, 79.55522], [13.658965, 79.553693], [13.658597, 79.55295], [13.658539, 79.552836], [13.657696, 79.551173], [13.657356, 79.550539], [13.656695, 79.54951], [13.656115, 79.548651], [13.655118, 79.547522], [13.653833, 79.54601], [13.651737, 79.54335], [13.651442, 79.542884], [13.650711, 79.541822], [13.650526, 79.541463], [13.650306, 79.541005], [13.649832, 79.539732], [13.649535, 79.538722], [13.64936, 79.537677], [13.649058, 79.535476], [13.648836, 79.534073], [13.648707, 79.533293], [13.648665, 79.532943], [13.648586, 79.532629], [13.648432, 79.532292], [13.648277, 79.532012], [13.648115, 79.531756], [13.647846, 79.531468], [13.647392, 79.531094], [13.646871, 79.530748], [13.645997, 79.530322], [13.644169, 79.529659], [13.642084, 79.528784], [13.64032, 79.528023], [13.638971, 79.527344], [13.638518, 79.527084], [13.637754, 79.526422], [13.63702, 79.525687], [13.636602, 79.525166], [13.635775, 79.523776], [13.635589, 79.523443], [13.634635, 79.521857], [13.633528, 79.519921], [13.632189, 79.517422], [13.632146, 79.51734], [13.631543, 79.51619], [13.63103, 79.51552], [13.63029, 79.514977], [13.629806, 79.514731], [13.62975, 79.514763], [13.629688, 79.514774], [13.629625, 79.514764], [13.629569, 79.514734], [13.629525, 79.514686], [13.6295, 79.514626], [13.628645, 79.514516], [13.628329, 79.514518], [13.627949, 79.514522], [13.62398, 79.514476], [13.623485, 79.514448], [13.622258, 79.514378], [13.622029, 79.514331], [13.62023, 79.513562], [13.619381, 79.513064], [13.618894, 79.512687], [13.618641, 79.512467], [13.617791, 79.511584], [13.617533, 79.511273], [13.617299, 79.510933], [13.616814, 79.510202], [13.616649, 79.509896], [13.616294, 79.509045], [13.616088, 79.508413], [13.615837, 79.507427], [13.615719, 79.507042], [13.615687, 79.506944], [13.615679, 79.506929], [13.615615, 79.506848], [13.615338, 79.506626], [13.615238, 79.50655], [13.615286, 79.506492], [13.615499, 79.506056], [13.61564, 79.505713], [13.615775, 79.505237], [13.615826, 79.504932], [13.61626, 79.501406], [13.61637, 79.500531], [13.616526, 79.499467], [13.616751, 79.497404], [13.616781, 79.497112], [13.616784, 79.497088], [13.616792, 79.496965], [13.61687, 79.495779], [13.616905, 79.494704], [13.616838, 79.493168], [13.616807, 79.492437], [13.616804, 79.492372], [13.616798, 79.491879], [13.616759, 79.490893], [13.616653, 79.488964], [13.616535, 79.486174], [13.616513, 79.485612], [13.616395, 79.482141], [13.616369, 79.481204], [13.61624, 79.478469], [13.616153, 79.476052], [13.616135, 79.475501], [13.616041, 79.473852], [13.615984, 79.47242], [13.615945, 79.471392], [13.615923, 79.470652], [13.61582, 79.468849], [13.615809, 79.468622], [13.61579, 79.468252], [13.615717, 79.46709], [13.615673, 79.466516], [13.615551, 79.465376], [13.615248, 79.463336], [13.615212, 79.463091], [13.614984, 79.461981], [13.614699, 79.460841], [13.614548, 79.460244], [13.614198, 79.459024], [13.614052, 79.458577], [13.61394, 79.45823], [13.613597, 79.457166], [13.613528, 79.456951], [13.613074, 79.45557], [13.612803, 79.45435], [13.612592, 79.452919], [13.612415, 79.45174], [13.612313, 79.450814], [13.612201, 79.450073], [13.612118, 79.449458], [13.6119, 79.448398], [13.611836, 79.447787], [13.611627, 79.445953], [13.611504, 79.444679], [13.611261, 79.443419], [13.611187, 79.443147], [13.611148, 79.44303], [13.611326, 79.442523], [13.611619, 79.441736], [13.611775, 79.441318], [13.612036, 79.440619], [13.612407, 79.439627], [13.612534, 79.439286], [13.613127, 79.437694], [13.61328, 79.437443], [13.613332, 79.437307], [13.613787, 79.436936], [13.614332, 79.436512], [13.614946, 79.436024], [13.61548, 79.435599], [13.615907, 79.435261], [13.616575, 79.434724], [13.61706, 79.434332], [13.617396, 79.434062], [13.617611, 79.433886], [13.617734, 79.433784], [13.617951, 79.433604], [13.618212, 79.433395], [13.618399, 79.433249], [13.618841, 79.432883], [13.619302, 79.432503], [13.619566, 79.432287], [13.622047, 79.430329], [13.622132, 79.430268], [13.622194, 79.430244], [13.622327, 79.430191], [13.622491, 79.43017], [13.622604, 79.430155], [13.62315, 79.430153], [13.623399, 79.430172], [13.623894, 79.430276], [13.624243, 79.430367], [13.624681, 79.430482], [13.626121, 79.430875], [13.626167, 79.43084], [13.62628, 79.430814], [13.62658, 79.430408], [13.62686, 79.430109], [13.627139, 79.429861], [13.627494, 79.429627], [13.627868, 79.429387], [13.628358, 79.429072], [13.628966, 79.428682], [13.629292, 79.428472], [13.629309, 79.428422], [13.629353, 79.42837], [13.629438, 79.428344], [13.62948, 79.428345], [13.629828, 79.428187], [13.630182, 79.428058], [13.630451, 79.427991], [13.630514, 79.427976], [13.630841, 79.427909], [13.631314, 79.427871], [13.631363, 79.427872], [13.633553, 79.427821], [13.634079, 79.427797], [13.63488, 79.427761], [13.634939, 79.42776], [13.634933, 79.427946], [13.634874, 79.427949], [13.634107, 79.427958], [13.63415, 79.428417], [13.634204, 79.428942], [13.634393, 79.428926], [13.634434, 79.428935], [13.634467, 79.428958], [13.634837, 79.429543], [13.634893, 79.429606], [13.635021, 79.429719], [13.635099, 79.429809], [13.635166, 79.429977], [13.635228, 79.430411], [13.635266, 79.430787], [13.635296, 79.431166], [13.635323, 79.431339], [13.63536, 79.431569], [13.63537, 79.431747], [13.635389, 79.432009], [13.63537, 79.431747], [13.636075, 79.431702], [13.636681, 79.431691], [13.636688, 79.431547], [13.636703, 79.431121], [13.636703, 79.431089], [13.636709, 79.430738], [13.636709, 79.430704], [13.636717, 79.430351], [13.636727, 79.429973], [13.636732, 79.429611], [13.636734, 79.429253], [13.636776, 79.428853], [13.636776, 79.428821], [13.636799, 79.428398], [13.636804, 79.428174], [13.636811, 79.427903], [13.635331, 79.427925], [13.634933, 79.427946], [13.634874, 79.427949], [13.63488, 79.427761], [13.634939, 79.42776], [13.635383, 79.427752], [13.635801, 79.427752], [13.635843, 79.427753], [13.636335, 79.427735], [13.636838, 79.427717], [13.637738, 79.427705], [13.638272, 79.427691], [13.638591, 79.427681], [13.638785, 79.427674], [13.639429, 79.427658], [13.64021, 79.427637], [13.641659, 79.427609], [13.641749, 79.427633], [13.641761, 79.42762], [13.641822, 79.427595], [13.641857, 79.427604], [13.641891, 79.427629], [13.642559, 79.427575], [13.643277, 79.427551], [13.643676, 79.427534], [13.644088, 79.427517], [13.644658, 79.427474], [13.645108, 79.427412], [13.645583, 79.427298], [13.645842, 79.427209], [13.645949, 79.427171], [13.64671, 79.42679], [13.64714, 79.42652], [13.647356, 79.426367], [13.647673, 79.426104], [13.648456, 79.425386], [13.648799, 79.425058], [13.649537, 79.42438], [13.649612, 79.424311], [13.64996, 79.423993], [13.650066, 79.423895], [13.650421, 79.423568], [13.650511, 79.423485], [13.650873, 79.423148], [13.652222, 79.421898], [13.652474, 79.421674], [13.652711, 79.421455], [13.653667, 79.42055], [13.653807, 79.420412], [13.653784, 79.420298], [13.653823, 79.420178], [13.653875, 79.420124], [13.653942, 79.420091], [13.654015, 79.420082], [13.654087, 79.420099], [13.65415, 79.42014], [13.654197, 79.4202], [13.654221, 79.420274], [13.65422, 79.420351], [13.654194, 79.420424], [13.654145, 79.420483], [13.654308, 79.420609], [13.654413, 79.420633], [13.654345, 79.421059], [13.654413, 79.420633], [13.654308, 79.420609], [13.654145, 79.420483], [13.654046, 79.420531], [13.653937, 79.420525], [13.653887, 79.420501], [13.653741, 79.420638], [13.652976, 79.421351], [13.652778, 79.421536], [13.652677, 79.421629], [13.650936, 79.423222], [13.650098, 79.423982], [13.649782, 79.424305], [13.649657, 79.424441], [13.649581, 79.424477], [13.648936, 79.42508], [13.647556, 79.426325], [13.647114, 79.426671], [13.646628, 79.426962], [13.645983, 79.427265], [13.645786, 79.427336], [13.645085, 79.427494], [13.644723, 79.42755], [13.644094, 79.427594], [13.641105, 79.427725], [13.637669, 79.427795], [13.635961, 79.427858], [13.635808, 79.427941], [13.632029, 79.428098], [13.631869, 79.428029], [13.631115, 79.428051], [13.630563, 79.428143], [13.63049, 79.428159], [13.630208, 79.428244], [13.629878, 79.428384], [13.629591, 79.428531], [13.629586, 79.428552], [13.629527, 79.428629], [13.629481, 79.42865], [13.629431, 79.428654], [13.628443, 79.429243], [13.627962, 79.429544], [13.627506, 79.42983], [13.62707, 79.430182], [13.626983, 79.430267], [13.626836, 79.430411], [13.62677, 79.430476], [13.626444, 79.430918], [13.626468, 79.430983], [13.626471, 79.431051], [13.626453, 79.431117], [13.626415, 79.431174], [13.626361, 79.431215], [13.626299, 79.431236], [13.626234, 79.431236], [13.626173, 79.431215], [13.62612, 79.431176], [13.62607, 79.431091], [13.626063, 79.430992], [13.625731, 79.43089], [13.624743, 79.430625], [13.624344, 79.430518], [13.623919, 79.430406], [13.623559, 79.430323], [13.623278, 79.43041], [13.622624, 79.43041], [13.62252, 79.43041], [13.62236, 79.430436], [13.622154, 79.430497], [13.621597, 79.430914], [13.621218, 79.431216], [13.619418, 79.432678], [13.619302, 79.432503], [13.618683, 79.431457], [13.618577, 79.43105], [13.618553, 79.430862], [13.618532, 79.430632], [13.618531, 79.430291], [13.61852, 79.430105], [13.618635, 79.430088], [13.618645, 79.429899], [13.618818, 79.429884], [13.619494, 79.429862], [13.619597, 79.429841], [13.619639, 79.429793], [13.619597, 79.429841], [13.619494, 79.429862], [13.618818, 79.429884], [13.618645, 79.429899], [13.618635, 79.430088], [13.61852, 79.430105], [13.618531, 79.430291], [13.618532, 79.430632], [13.618553, 79.430862], [13.618577, 79.43105], [13.618683, 79.431457], [13.619302, 79.432503], [13.619566, 79.432287], [13.622047, 79.430329], [13.622132, 79.430268], [13.622194, 79.430244], [13.622327, 79.430191], [13.622491, 79.43017], [13.622604, 79.430155], [13.62315, 79.430153], [13.623399, 79.430172], [13.623894, 79.430276], [13.624243, 79.430367], [13.624681, 79.430482], [13.626121, 79.430875], [13.626167, 79.43084], [13.62628, 79.430814], [13.62658, 79.430408], [13.62686, 79.430109], [13.627139, 79.429861], [13.627494, 79.429627], [13.627868, 79.429387], [13.628358, 79.429072], [13.628966, 79.428682], [13.629292, 79.428472], [13.629309, 79.428422], [13.629353, 79.42837], [13.629438, 79.428344], [13.62948, 79.428345], [13.629828, 79.428187], [13.630182, 79.428058], [13.630451, 79.427991], [13.630514, 79.427976], [13.630841, 79.427909], [13.631314, 79.427871], [13.631363, 79.427872], [13.633553, 79.427821], [13.634079, 79.427797], [13.63488, 79.427761], [13.634914, 79.426525], [13.634979, 79.425507], [13.634987, 79.425343], [13.635067, 79.425002], [13.635142, 79.424778], [13.635218, 79.424538], [13.635259, 79.424394], [13.635283, 79.424233], [13.635372, 79.423449], [13.635305, 79.423412], [13.635273, 79.423324], [13.635309, 79.423239], [13.635393, 79.423204], [13.635501, 79.422998], [13.635613, 79.422831], [13.636008, 79.422161], [13.635843, 79.422068], [13.635854, 79.421981], [13.635986, 79.420998], [13.635854, 79.421981], [13.635843, 79.422068], [13.635014, 79.421573], [13.634888, 79.421508], [13.634443, 79.421291], [13.633847, 79.42097], [13.633643, 79.420845], [13.633449, 79.420725], [13.632319, 79.420044], [13.632008, 79.419854], [13.631996, 79.419846], [13.631966, 79.419831], [13.63174, 79.419695], [13.631212, 79.419535], [13.631224, 79.419935], [13.63124, 79.420658], [13.631248, 79.421044], [13.631265, 79.421447], [13.631267, 79.421928], [13.631275, 79.422326], [13.631277, 79.422401], [13.631275, 79.422878], [13.63121, 79.423082], [13.631142, 79.423171], [13.631014, 79.423225], [13.630844, 79.423301], [13.630669, 79.42338], [13.630604, 79.423411], [13.629897, 79.423736], [13.629912, 79.423009], [13.629897, 79.423736], [13.630604, 79.423411], [13.630669, 79.42338], [13.630844, 79.423301], [13.631014, 79.423225], [13.631142, 79.423171], [13.63121, 79.423082], [13.631275, 79.422878], [13.631277, 79.422401], [13.631275, 79.422326], [13.631267, 79.421928], [13.631265, 79.421447], [13.631446, 79.421408], [13.631698, 79.420709], [13.631741, 79.420592], [13.632008, 79.419854], [13.631996, 79.419846], [13.631966, 79.419831], [13.63174, 79.419695], [13.631212, 79.419535], [13.631137, 79.419506], [13.630705, 79.419447], [13.630136, 79.41939], [13.62976, 79.419366], [13.629761, 79.420049], [13.629905, 79.420136], [13.629964, 79.420196], [13.629977, 79.420252], [13.629969, 79.420499]],
+        {
+            "stroke": true,
+            "color": "#2563eb",
+            "weight": 6,
+            "opacity": 0.9,
+            "lineCap": "round",
+            "lineJoin": "round",
+            "dashArray": [
+                10,
+                20,
+            ],
+            "dashOffset": null,
+            "fill": false,
+            "fillColor": "#2563eb",
+            "fillOpacity": 0.2,
+            "fillRule": "evenodd",
+            "bubblingMouseEvents": true,
+            "smoothFactor": 1.0,
+            "noClip": false,
+            "paused": false,
+            "reverse": false,
+            "hardwareAcceleration": false,
+            "delay": 800,
+            "pulseColor": "#FFFFFF",
+        }
+    ).addTo(map_e1f2f215c9044aabd1503e574063d7af);
+
 </script>
+
 </html>
