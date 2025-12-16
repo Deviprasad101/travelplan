@@ -1,0 +1,6 @@
+name of the place,category,latitude,longitude,visit_start,visit_end,description,spend_time_minutes,geometry,distance_from_previous_km
+Tirumala Venkateswara Temple,Temple,13.683267,79.347422,09:00,17:00,Popular temple located in Tirupati region,44,POINT (79.347422 13.683267),22.7821
+Silathoranam (Sila Thoranam),Natural Arch / Sight,13.6839,79.3475,10:30,20:00,Popular natural arch / sight located in Tirupati region,39,POINT (79.3475 13.6839),0.0
+Akasa Ganga (Tirumala Falls),Waterfall / Pilgrimage spot,13.6845,79.3468,09:00,17:00,Popular waterfall / pilgrimage spot located in Tirupati region,82,POINT (79.3468 13.6845),1.2389000000000001
+Sri Venkateswara Zoological Park (SV Zoo),Zoo / Park,13.6249,79.3646,10:30,20:00,Popular zoo / park located in Tirupati region,96,POINT (79.3646 13.6249),25.0515
+Sri Padmavathi Ammavari Temple (Tiruchanur),Temple,13.624,79.412,09:00,17:00,Popular temple located in Tirupati region,62,POINT (79.412 13.624),8.6724

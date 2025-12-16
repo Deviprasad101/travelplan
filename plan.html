@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Trip Planner</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #e0f2fe, #f5d0fe);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .site-header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            padding: 24px 0;
+            color: white;
+            text-align: center;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 18px;
+            box-shadow: 0 6px 24px rgba(15, 23, 42, 0.12);
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 2px solid #cbd5e1;
+            margin-bottom: 16px;
+        }
+
+        .gps-status {
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            background: #eff6ff;
+        }
+
+        /* GEO-TOGGLE BUTTON */
+        .geo-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .geo-btn {
+            padding: 8px 16px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .geo-btn.off {
+            background: #ef4444;
+        }
+
+        /* NAVIGATION BUTTONS */
+        .nav-button {
+            position: fixed;
+            bottom: 20px;
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            cursor: pointer;
+            border: none;
+        }
+
+        .powered-by {
+            font-size: 20px;
+            font-weight: 1000;
+            margin-top: -30px;
+            margin-bottom: 25px;
+            color: #4c1d95;
+            /* violet (matches theme) */
+            text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-nav {
+            left: 20px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+        }
+
+        .next-nav {
+            right: 20px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+
+        @media (max-width: 640px) {
+            .nav-button {
+                bottom: 15px;
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+
+            .back-nav {
+                left: 10px;
+            }
+
+            .next-nav {
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+
+            <!-- LOGO IMAGE -->
+            <img src="static/images/LOGO OF TIH.jpg" alt="Trip Planner Logo"
+                style="width:780px; border-radius:50px; margin-bottom:50px; box-shadow:0 4px 12px #00000033;">
+            <p class="powered-by">Powered by Geo-Intel Lab</p>
+            <!-- Trip Planning Image -->
+            <img src="static/IMAGES/trip plan.jpg" alt="Plan Trip Image" style="
+        width: 70%;
+        max-width: 400px;
+        display: block;
+        margin: 0 auto 25px auto;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+     ">
+
+
+
+            <h1>Trip Planner</h1>
+        </div>
+    </header>
+
+
+    <main class="container">
+
+        <!-- BEAUTIFUL INTRO CARD -->
+        <section class="intro-card" style="
+        background: linear-gradient(135deg,#eef2ff,#faf5ff);
+        padding: 22px;
+        border-radius: 20px;
+        margin-top: 30px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        animation: fadeIn 0.8s ease;
+        text-align:center;
+    ">
+            <h2 style="margin-top:0; color:#5b21b6; font-weight:800;">✨ Start Planning Your Perfect Trip</h2>
+            <p style="color:#444; font-size:15px;">
+                Enter your trip details below — our system will automatically create the best travel plan for you.
+            </p>
+        </section>
+
+        <br>
+
+        <!-- MAIN CARD -->
+        <section class="card" style="animation: slideUp 0.8s ease;">
+
+            <h2 style="color:#4c1d95; font-weight:800;">Plan Your Trip</h2>
+
+            <!-- Interactive highlight bar -->
+            <div style="
+            height:4px;
+            width:100px;
+            background:linear-gradient(135deg,#7c3aed,#4f46e5);
+            border-radius:4px;
+            margin-bottom:20px;
+        "></div>
+
+            <!-- GEO LOCATION TOGGLE -->
+            <div class="geo-toggle" style="display:flex; align-items:center; gap:12px;">
+                <label style="font-weight:700; color:#334155">Geo Location:</label>
+                <button id="geo_btn" class="geo-btn" onclick="toggleGeo()" style="
+                padding:8px 18px;
+                background:#10b981;
+                border:none;
+                color:white;
+                border-radius:10px;
+                cursor:pointer;
+                font-weight:700;
+                box-shadow:0 4px 12px rgba(16,185,129,0.35);
+                transition:0.3s;
+            ">ON</button>
+            </div>
+
+            <!-- GPS STATUS BOX -->
+            <div id="gps_status" class="gps-status" style="
+            padding:12px;
+            text-align:center;
+            font-weight:700;
+            border-radius:14px;
+            margin:16px 0;
+            background:#e0f7ff;
+            color:#0369a1;
+            box-shadow:0 3px 10px rgba(0,0,0,0.08);
+        ">
+                GPS is ON — Detecting your location…
+            </div>
+
+            <form id="trip-form" action="/plan_trip" method="POST">
+
+                <!-- Hidden GPS -->
+                <input type="hidden" id="start_lat" name="start_lat">
+                <input type="hidden" id="start_lon" name="start_lon">
+
+                <!-- Manual location -->
+                <label style="color:#475569;font-weight:700;">Enter Start Location (Optional)</label>
+                <input type="text" id="manual_location" name="manual_location" placeholder="Example: Tirupati Bus Stand"
+                    style="transition:0.3s;">
+
+                <!-- Start Time -->
+                <label style="color:#475569;font-weight:700;">Trip Start Time</label>
+                <div style="display:flex; gap:10px;">
+                    <select id="start_hour" name="start_hour" style="flex:1;"></select>
+                    <select id="start_minute" name="start_minute" style="flex:1;"></select>
+                </div>
+
+                <!-- End Time -->
+                <label style="color:#475569;font-weight:700; margin-top:10px;">Trip End Time</label>
+                <div style="display:flex; gap:10px;">
+                    <select id="end_hour" name="end_hour" style="flex:1;"></select>
+                    <select id="end_minute" name="end_minute" style="flex:1;"></select>
+                </div>
+
+                <!-- Date -->
+                <label style="color:#475569;font-weight:700; margin-top:10px;">Trip Date</label>
+                <input type="date" id="trip_date" name="trip_date" required>
+
+                <!-- Days -->
+                <label style="color:#475569;font-weight:700;">Number of Days</label>
+                <input type="number" id="num_days" name="num_days" min="1" max="30" value="1" required>
+
+            </form>
+        </section>
+
+        <br>
+
+        <!-- Useful reminder box -->
+        <div style="
+        padding:18px;
+        background:#fff7ed;
+        border-left:6px solid #f97316;
+        border-radius:10px;
+        margin-bottom:80px;
+        box-shadow:0 4px 14px rgba(0,0,0,0.1);
+        animation: fadeIn 1s ease;
+    ">
+            <b style="color:#b45309;">💡 Tip:</b>
+            <span style="color:#4b5563;">Keep your GPS ON for accurate automatic location detection.</span>
+        </div>
+
+    </main>
+
+
+    <!-- Simple animations -->
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+
+    <!-- NAVIGATION BUTTONS -->
+    <a href="index.html" class="nav-button back-nav">← Back</a>
+    <button class="nav-button next-nav" onclick="submitTrip()">Next →</button>
+
+    <script>
+
+        /* ZERO PAD */
+        function pad(n) { return n < 10 ? '0' + n : n; }
+
+        /* POPULATE TIME FIELDS */
+        function populateTime() {
+            for (let i = 0; i < 24; i++) {
+                start_hour.innerHTML += `<option>${pad(i)}</option>`;
+                end_hour.innerHTML += `<option>${pad(i)}</option>`;
+            }
+            for (let i = 0; i < 60; i++) {
+                start_minute.innerHTML += `<option>${pad(i)}</option>`;
+                end_minute.innerHTML += `<option>${pad(i)}</option>`;
+            }
+        }
+
+        /* DEFAULT DATE */
+        function setDate() {
+            let d = new Date();
+            trip_date.value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+        }
+
+        /* GEO ON/OFF SYSTEM */
+        let geoEnabled = true;
+
+        /* GEO ON/OFF SYSTEM */
+        function toggleGeo() {
+            geoEnabled = !geoEnabled;
+
+            const btn = document.getElementById("geo_btn");
+            const manualInput = document.getElementById("manual_location");
+
+            if (geoEnabled) {
+                btn.textContent = "ON";
+                btn.classList.remove("off");
+
+                gps_status.textContent = "GPS is ON — Detecting your location…";
+                gps_status.style.color = "#0369a1";
+
+                manualInput.disabled = true;
+                manualInput.style.opacity = "0.5";
+                manualInput.style.cursor = "not-allowed";
+
+                detectLocation(); // Re-detect when turned ON
+            } else {
+                btn.textContent = "OFF";
+                btn.classList.add("off");
+
+                gps_status.textContent = "GPS is OFF — Please enter your location manually.";
+                gps_status.style.color = "red";
+
+                manualInput.disabled = false;
+                manualInput.style.opacity = "1";
+                manualInput.style.cursor = "text";
+
+                start_lat.value = "";
+                start_lon.value = "";
+            }
+        }
+
+
+
+        /* DETECT LOCATION (Only when GPS is ON) */
+        /* DETECT LOCATION (with permission & error handling) */
+        /* EXACT extracted geolocation code integrated into Trip Planner */
+        function detectLocation() {
+
+            // Check browser support exactly like your test code
+            if (navigator.geolocation) {
+
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        // EXACT TEST SUCCESS CODE integrated
+                        start_lat.value = position.coords.latitude;
+                        start_lon.value = position.coords.longitude;
+
+                        gps_status.textContent =
+                            "Latitude: " + position.coords.latitude +
+                            " | Longitude: " + position.coords.longitude;
+
+                        gps_status.style.color = "green";
+                    },
+
+                    function () {
+                        // EXACT TEST ERROR CODE
+                        alert("Sorry, no position available.");
+
+                        gps_status.textContent = "GPS failed — Enter manually.";
+                        gps_status.style.color = "red";
+
+                        manual_location.disabled = false;
+                        manual_location.style.opacity = "1";
+                        manual_location.style.cursor = "text";
+                    }
+                );
+
+            } else {
+                // EXACT test code elseif
+                gps_status.textContent = "Geolocation is not supported by this browser.";
+                gps_status.style.color = "red";
+            }
+        }
+
+
+
+        /* GEOCODE MANUAL */
+        async function geocode(address) {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+            let res = await fetch(url);
+            let data = await res.json();
+            return data.length ? { lat: data[0].lat, lon: data[0].lon } : null;
+        }
+
+        /* SUBMIT TRIP */
+        async function submitTrip() {
+
+            let trip_form = document.getElementById("trip-form");  // ← FIXED LINE
+
+            const manual = manual_location.value.trim();
+
+            // Manual mode
+            if (!geoEnabled) {
+                if (manual === "") {
+                    alert("Please enter your start location because GPS is OFF.");
+                    return;
+                }
+
+                const loc = await geocode(manual);
+                if (!loc) {
+                    alert("Invalid location. Try again.");
+                    return;
+                }
+
+                start_lat.value = loc.lat;
+                start_lon.value = loc.lon;
+            } else {
+                // Geo Mode Validation
+                if (!start_lat.value || !start_lon.value) {
+                    alert("GPS location not detected yet. Please wait or switch to manual mode.");
+                    return;
+                }
+            }
+
+            // Add time fields
+            let st = document.createElement("input");
+            st.type = "hidden";
+            st.name = "start_time";
+            st.value = start_hour.value + ":" + start_minute.value;
+
+            let et = document.createElement("input");
+            et.type = "hidden";
+            et.name = "end_time";
+            et.value = end_hour.value + ":" + end_minute.value;
+
+            trip_form.appendChild(st);
+            trip_form.appendChild(et);
+
+            trip_form.submit();
+        }
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            populateTime();
+            setDate();
+            detectLocation();
+        });
+
+    </script>
+
+</body>
+
+</html>
