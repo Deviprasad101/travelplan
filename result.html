@@ -272,6 +272,25 @@
             loadPlaces(tripData);
         }
 
+
+        /* HELPERS */
+        function toMin(timeStr) {
+            if (!timeStr) return 0;
+            const [h, m] = timeStr.split(':').map(Number);
+            return h * 60 + m;
+        }
+
+        function haversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; // km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
         async function loadPlaces(tripData) {
             try {
                 const response = await fetch('tirupati_places_final_updated.csv');
@@ -281,26 +300,103 @@
                 const lines = csvText.split('\n');
                 const headers = lines[0].split(',').map(h => h.trim());
 
-                const places = [];
-                for (let i = 1; i < Math.min(lines.length, 11); i++) { // Show first 10 places
+                let allPlaces = [];
+                for (let i = 1; i < lines.length; i++) {
                     if (lines[i].trim()) {
-                        const values = lines[i].split(',');
+                        const values = lines[i].split(',').map(v => v.trim());
                         const place = {};
                         headers.forEach((header, index) => {
-                            place[header] = values[index] ? values[index].trim() : '';
+                            place[header] = values[index] || '';
                         });
-                        places.push(place);
+
+                        if (place['latitude'] && place['longitude']) {
+                            allPlaces.push(place);
+                        }
                     }
                 }
 
-                // Update total places count
-                document.getElementById('total-places').textContent = places.length;
+                // --- ALGORITHM: Filter & Select ---
 
-                // Display places
+                // 1. Get User Config from LocalStorage (Manual or GPS)
+                let startLat = parseFloat(tripData.start_lat);
+                let startLon = parseFloat(tripData.start_lon);
+
+                console.log("Trip Start Location Used:", startLat, startLon);
+
+                if (isNaN(startLat) || isNaN(startLon)) {
+                    // Fallback default
+                    startLat = 13.6288;
+                    startLon = 79.4192;
+                }
+
+                let startTimeMin = toMin(tripData.start_time);
+                let endTimeMin = toMin(tripData.end_time);
+                let tripDays = parseInt(tripData.num_days) || 1;
+
+                let dayEndMin = endTimeMin;
+                if (endTimeMin <= startTimeMin) dayEndMin += 24 * 60;
+
+                let dailyDuration = dayEndMin - startTimeMin;
+                let totalTripMinutes = dailyDuration * tripDays;
+
+                let remainingBudget = totalTripMinutes;
+                let currentLat = startLat;
+                let currentLon = startLon;
+
+                // 2. Selection Loop (Greedy Nearest Neighbor)
+                let selectedPlaces = [];
+                let visitedIndices = new Set();
+                let avgSpeed = 30; // km/h
+
+                while (remainingBudget > 0 && selectedPlaces.length < allPlaces.length) {
+                    let bestIdx = -1;
+                    let minDist = Infinity;
+
+                    for (let i = 0; i < allPlaces.length; i++) {
+                        if (visitedIndices.has(i)) continue;
+
+                        let d = haversine(currentLat, currentLon, parseFloat(allPlaces[i]['latitude']), parseFloat(allPlaces[i]['longitude']));
+                        if (d < minDist) {
+                            minDist = d;
+                            bestIdx = i;
+                        }
+                    }
+
+                    if (bestIdx === -1) break;
+
+                    let travelTime = (minDist / avgSpeed) * 60;
+                    let spendTime = parseInt(allPlaces[bestIdx]['spend_time_minutes']) || 30;
+                    let cost = travelTime + spendTime;
+
+                    if (remainingBudget >= cost) {
+                        visitedIndices.add(bestIdx);
+                        let p = allPlaces[bestIdx];
+                        p.distance_from_previous = minDist.toFixed(2);
+                        selectedPlaces.push(p);
+
+                        remainingBudget -= cost;
+                        currentLat = parseFloat(p['latitude']);
+                        currentLon = parseFloat(p['longitude']);
+                    } else {
+                        visitedIndices.add(bestIdx);
+                    }
+
+                    if (selectedPlaces.length >= 15 * tripDays) break;
+                }
+
+                // 3. Save results
+                localStorage.setItem('selectedPlaces', JSON.stringify(selectedPlaces));
+                document.getElementById('total-places').textContent = selectedPlaces.length;
+
+                // 4. Render
                 const placesList = document.getElementById('places-list');
                 placesList.innerHTML = '';
 
-                places.forEach((place, index) => {
+                if (selectedPlaces.length === 0) {
+                    placesList.innerHTML = '<li style="padding:20px; text-align:center; color:#666;">No places found suitable for your time.</li>';
+                }
+
+                selectedPlaces.forEach((place, index) => {
                     const li = document.createElement('li');
                     li.className = 'place-item';
                     li.innerHTML = `
@@ -318,6 +414,10 @@
                             <span class="field-value">${place['spend_time_minutes'] || 'N/A'} mins</span>
                         </div>
                         <div class="field-row">
+                            <span class="field-label">Dist from prev:</span>
+                            <span class="field-value">${place.distance_from_previous} km</span>
+                        </div>
+                        <div class="field-row">
                             <span class="field-label">Description:</span>
                             <span class="field-value">${place['description'] || 'No description'}</span>
                         </div>
@@ -327,8 +427,8 @@
 
             } catch (error) {
                 console.error('Error loading places:', error);
-                document.getElementById('total-places').textContent = 'Error loading';
-                document.getElementById('places-list').innerHTML = '<li style="padding:20px; text-align:center; color:#666;">Error loading places data.</li>';
+                document.getElementById('total-places').textContent = 'Error';
+                document.getElementById('places-list').innerHTML = '<li style="padding:20px; text-align:center; color:red;">Error loading places.</li>';
             }
         }
 
