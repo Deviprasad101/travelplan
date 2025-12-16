@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Trip Planner</title>
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 100;
+            font-family: 'Poppins', sans-serif;
+            transition: background 0.5s, color 0.5s;
+            background: linear-gradient(135deg, #f6e9ff, #dbe7ff, #fce7ff);
+            color: #333;
+        }
+
+        .dark-mode {
+            background: linear-gradient(135deg, #0d0d0d, #1a1a1a, #232323) !important;
+            color: #eaeaea !important;
+        }
+
+        .dark-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #222;
+            padding: 10px 16px;
+            border-radius: 22px;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px #00000055;
+        }
+
+        /* ======================= HERO SECTION ======================= */
+        .hero {
+            background: url("{{ url_for('static', filename='images/your_background.jpg') }}") center/cover no-repeat;
+            height: 70vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(45, 0, 110, 0.55);
+            top: 0;
+            left: 0;
+        }
+
+        .hero-bottom-image {
+            position: absolute;
+            bottom: 43px;
+            width: 335px;
+            max-width: 600px;
+            border-radius: 20px;
+            z-index: 5;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 5;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 45px;
+            font-weight: 800;
+            margin-top: -200px;
+            /* move UP */
+            margin-bottom: 0;
+            text-shadow: 3px 3px 12px black;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        .powered-heading {
+            font-size: 34px;
+            /* increase size */
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        /* ======================= BEAUTIFUL SECTIONS UPGRADED ======================= */
+        .section {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 28px;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px #00000022;
+            display: flex;
+            gap: 25px;
+            align-items: center;
+            transition: 0.4s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 40px #00000033;
+        }
+
+        .section img {
+            width: 160px;
+            height: 160px;
+            border-radius: 18px;
+            object-fit: cover;
+            box-shadow: 0 4px 12px #00000044;
+        }
+
+        .section-content {
+            flex: 1;
+        }
+
+        .section h2 {
+            font-size: 26px;
+            margin-top: 0;
+            font-weight: 800;
+            color: #5b21b6;
+        }
+
+        .dark-mode .section {
+            background: #151515 !important;
+            color: white !important;
+        }
+
+        .dark-mode .section h2 {
+            color: #d8b4ff !important;
+        }
+
+        .highlight-list li {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        /* Quote boxes */
+        .quote-box {
+            padding: 22px;
+            background: linear-gradient(135deg, #ffe4fa, #dee8ff);
+            border-radius: 14px;
+            font-style: italic;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #511191;
+        }
+
+        .big-btn {
+            display: block;
+            width: fit-content;
+            margin: 50px auto;
+            padding: 14px 35px;
+            background: linear-gradient(135deg, #6b31ff, #a359ff);
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+        }
+
+
+        /* your existing CSS is already here */
+
+        /* ======================= NAV BAR ======================= */
+        .navbar {
+            position: relative;
+            top: 0;
+            width: 95.3;
+            height: 70px;
+            background: #413b77;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 3000;
+            box-shadow: 0 4px 15px rgba(181, 14, 106, 0.5);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo {
+            height: 55px;
+            border-radius: 20px;
+        }
+
+        .nav-title {
+            color: rgb(255, 255, 255);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .nav-right button {
+            background: linear-gradient(135deg, #6b31ff, #a359ff);
+            border: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 5px 12px;
+            margin-top: -10px;
+        }
+
+        .nav-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .nav-dark-btn {
+            margin-left: 200px;
+            /* increase to 15px or 20px if needed */
+        }
+
+        #time-bar {
+            margin-bottom: 10px;
+
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            /* purple → blue */
+            color: #ffffff;
+            /* text color */
+            padding: 6px 14px;
+            border-radius: 8px;
+            padding: 5px 8px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+
+        .nav-dark-btn {
+            margin-top: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- ======================= NAV BAR ======================= -->
+    <div class="navbar">
+
+        <div class="nav-left">
+            <img src="{{ url_for('static', filename='images/LOGO OF TIH.jpg') }}" class="nav-logo">
+        </div>
+
+        <span class="nav-title">Trip Planner</span>
+
+        <div class="nav-right">
+            <!-- LIVE DATE & TIME -->
+            <div id="time-bar">
+                <span id="time-text">Loading...</span>
+            </div>
+            <button class="nav-dark-btn" onclick="toggleDarkMode()">🌙DARKMODE</button>
+        </div>
+    </div>
+    <!-- HERO SECTION UNCHANGED -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Trip Planner</h1>
+            <h2 class="powered-heading"> Powered by Geo-Intel Lab</h2>
+            <p>Your Smart Way to Plan Perfect Trips</p>
+        </div>
+        <img src="{{ url_for('static', filename='images/pic for wel page.jpg') }}" class="hero-bottom-image">
+    </div>
+
+    <!-- ======================= REDESIGNED SECTIONS ======================= -->
+
+    <!-- ======================= 1. ABOUT THIS PROJECT ======================= -->
+    <div class="section">
+        <img src="{{ url_for('static', filename='images/about.jpg') }}" alt="About Project">
+        <div class="section-content">
+            <h2>📘 About This Project</h2>
+            <p>This Trip Planner helps you create stress-free travel plans automatically.</p>
+            <ul class="highlight-list">
+                <li>✔ Understands travel time</li>
+                <li>✔ Checks opening hours</li>
+                <li>✔ Optimizes route & sequence</li>
+                <li>✔ Builds a ready itinerary for you</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ======================= 2. HOW IT WORKS ======================= -->
+    <div class="section">
+        <img src="{{ url_for('static', filename='images/steps.jpg') }}" alt="How It Works">
+        <div class="section-content">
+            <h2>⚙️ How Trip Planner Works (Step-by-Step)</h2>
+            <ol class="highlight-list">
+                <li>Turn ON GPS or enter location</li>
+                <li>Enter start/end time</li>
+                <li>Select number of days</li>
+                <li>Click “Plan My Trip”</li>
+                <li>Get map + route + PDF</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ======================= 3. FEATURES ======================= -->
+    <div class="section">
+        <img src="{{ url_for('static', filename='images/features.jpg') }}" alt="Features">
+        <div class="section-content">
+            <h2>🌟 Features Explained in Detail</h2>
+            <ul class="highlight-list">
+                <li>🧭 Smart Routing</li>
+                <li>⏳ Time Optimization</li>
+                <li>📍 GPS Auto Detect</li>
+                <li>🗺️ Interactive Map</li>
+                <li>🚗 Google Maps Multi-stop</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ======================= 4. WHO IS THIS FOR ======================= -->
+    <div class="section">
+        <img src="{{ url_for('static', filename='images/users.jpg') }}" alt="Users">
+        <div class="section-content">
+            <h2>👥 Who Is This App For?</h2>
+            <ul class="highlight-list">
+                <li>✔ Tourists & Families</li>
+                <li>✔ Devotees</li>
+                <li>✔ Students</li>
+                <li>✔ Senior citizens</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ======================= 5. TIPS ======================= -->
+    <div class="section">
+        <img src="{{ url_for('static', filename='images/tips.jpg') }}" alt="Tips">
+        <div class="section-content">
+            <h2>💡 Tips for Best Results</h2>
+            <ul class="highlight-list">
+                <li>✔ Keep GPS ON</li>
+                <li>✔ Enter accurate time</li>
+                <li>✔ Check map before trip</li>
+                <li>✔ Use Google Maps navigation</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ======================= 6. SAFETY ======================= -->
+    <div class="section">
+        <img src="{{ url_for('static', filename='images/safety.jpg') }}" alt="Safety Tips">
+        <div class="section-content">
+            <h2>🔒 Safety & Information Tips</h2>
+            <ul class="highlight-list">
+                <li>✔ Carry water & ID</li>
+                <li>✔ Avoid peak crowds</li>
+                <li>✔ Check temple timings</li>
+                <li>✔ Keep your mobile charged</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ======================= 7. FAQ ======================= -->
+    <div class="section">
+        <img src="{{ url_for('static', filename='images/faq.jpg') }}" alt="FAQ">
+        <div class="section-content">
+            <h2>❓ Frequently Asked Questions</h2>
+            <ul class="highlight-list">
+                <li><b>How are places selected?</b> → Based on time & distance</li>
+                <li><b>GPS not working?</b> → Use manual location</li>
+                <li><b>Can I download the map?</b> → Yes, HTML file available</li>
+                <li><b>Are routes accurate?</b> → OSRM provides reliable routing</li>
+            </ul>
+        </div>
+    </div>
+    <!-- ======================= VIDEO SECTION ======================= -->
+    <div class="section" style="flex-direction: column; text-align: center;">
+        <h2 style="margin-bottom: 15px;">🎥 Experience the Journey</h2>
+
+        <video controls autoplay muted loop style="
+            width: 100%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(92, 9, 218, 0.35);
+        ">
+            <source src="{{ url_for('static', filename='videos/intro.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <p style="margin-top: 15px; font-size: 16px; font-weight: 500;">
+            See how Trip Planner helps you plan smarter and travel better.
+        </p>
+    </div>
+
+
+
+    <!-- QUOTES -->
+    <div class="section">
+        <div class="section-content">
+            <div class="quote-box">“Travel far enough, you meet yourself.”</div><br>
+            <div class="quote-box">“Adventures fill your soul.”</div><br>
+            <div class="quote-box">“Travel makes you richer.”</div>
+        </div>
+    </div>
+
+    <a href="/plan" class="big-btn">Plan My Trip →</a>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            document.querySelectorAll(".section").forEach(s => {
+                s.classList.toggle("dark-section");
+            });
+        }
+    </script>
+    <script>
+        function updateTime() {
+            let now = new Date().toLocaleString("en-IN", {
+                timeZone: "Asia/Kolkata",
+                weekday: "long",
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            });
+
+            document.getElementById("time-text").textContent = now;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+
+
+
+
+
+</body>
+
+</html>
