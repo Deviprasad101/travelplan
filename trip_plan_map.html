@@ -191,35 +191,56 @@
                         });
 
 
-                        // 3. DRAW NEW PATH
-                        var pathPoints = [[startLat, startLon]];
 
-                        // Add all place coordinates in order
+                        // 3. DRAW NEW PATH (OSRM Routing)
+                        var waypoints = [[startLon, startLat]]; // Note: OSRM uses Lon,Lat
+
                         places.forEach(p => {
                             if (p.latitude && p.longitude) {
-                                pathPoints.push([parseFloat(p.latitude), parseFloat(p.longitude)]);
+                                waypoints.push([parseFloat(p.longitude), parseFloat(p.latitude)]);
                             }
                         });
 
-                        // Draw Polyline (using AntPath if available, else standard)
-                        if (typeof L.polyline.antPath === 'function') {
-                            L.polyline.antPath(pathPoints, {
-                                "delay": 800,
-                                "dashArray": [10, 20],
-                                "weight": 6,
-                                "color": "#2563eb",
-                                "pulseColor": "#FFFFFF",
-                                "paused": false,
-                                "reverse": false,
-                                "hardwareAcceleration": true
-                            }).addTo(map);
-                        } else {
-                            L.polyline(pathPoints, { color: 'blue', weight: 5 }).addTo(map);
-                        }
+                        // Construct OSRM URL (Service: driving, Format: lon,lat;lon,lat...)
+                        var coordsString = waypoints.map(pt => pt.join(',')).join(';');
+                        var osrmUrl = `https://router.project-osrm.org/route/v1/driving/${coordsString}?overview=full&geometries=geojson`;
 
-                        // 4. FIT BOUNDS
-                        var bounds = L.latLngBounds(pathPoints);
-                        map.fitBounds(bounds, { padding: [50, 50] });
+                        console.log("Fetching Route:", osrmUrl);
+
+                        fetch(osrmUrl)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.routes && data.routes.length > 0) {
+                                    // Success: Draw Road Path
+                                    var routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]); // Flip back to Lat,Lon for Leaflet
+
+                                    if (typeof L.polyline.antPath === 'function') {
+                                        L.polyline.antPath(routeCoords, {
+                                            "delay": 800,
+                                            "dashArray": [10, 20],
+                                            "weight": 5,
+                                            "color": "#2563eb",
+                                            "pulseColor": "#FFFFFF",
+                                            "paused": false,
+                                            "reverse": false
+                                        }).addTo(map);
+                                    } else {
+                                        L.polyline(routeCoords, { color: 'blue', weight: 5, opacity: 0.7 }).addTo(map);
+                                    }
+
+                                    // Fit bounds to the road path
+                                    map.fitBounds(L.polyline(routeCoords).getBounds(), { padding: [50, 50] });
+                                } else {
+                                    throw new Error("No route found");
+                                }
+                            })
+                            .catch(err => {
+                                console.error("OSRM Error, falling back to straight lines:", err);
+                                // Fallback: Straight Lines
+                                var straightPath = waypoints.map(pt => [pt[1], pt[0]]); // Flip to Lat,Lon
+                                L.polyline(straightPath, { color: 'red', weight: 3, dashArray: '5, 10' }).addTo(map);
+                                map.fitBounds(L.latLngBounds(straightPath), { padding: [50, 50] });
+                            });
 
                     }, 1000);
                 }
