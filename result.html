@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Trip Planner - Results</title>
 
-    <!-- ========================================================= -->
-    <!-- 2️⃣ GLOBAL & LAYOUT STYLES                                -->
-    <!-- ========================================================= -->
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -23,9 +20,6 @@
             margin: 0 auto;
         }
 
-        /* --------------------------------------------------------- */
-        /* 2.1 HEADER STYLES                                         */
-        /* --------------------------------------------------------- */
         .site-header {
             background: linear-gradient(135deg, #7c3aed, #a855f7);
             padding: 24px 0;
@@ -47,9 +41,6 @@
             margin-bottom: 60px;
         }
 
-        /* --------------------------------------------------------- */
-        /* 2.2 CARD STYLES                                           */
-        /* --------------------------------------------------------- */
         .card {
             background: white;
             padding: 24px;
@@ -62,16 +53,11 @@
             color: #4c1d95;
         }
 
-        /* --------------------------------------------------------- */
-        /* 2.3 TRIP SUMMARY SECTION                                  */
-        /* --------------------------------------------------------- */
         .trip-summary p {
-            margin: 4px 0;
+            margin: 8px 0;
+            font-size: 16px;
         }
 
-        /* --------------------------------------------------------- */
-        /* 2.4 PLACES LIST & ITEMS                                   */
-        /* --------------------------------------------------------- */
         .places-list ul {
             list-style: none;
             padding: 0;
@@ -107,9 +93,6 @@
             color: #111827;
         }
 
-        /* --------------------------------------------------------- */
-        /* 2.5 ACTION BUTTONS                                        */
-        /* --------------------------------------------------------- */
         .actions {
             margin-top: 16px;
         }
@@ -118,6 +101,7 @@
             display: inline-block;
             padding: 10px 18px;
             margin-right: 10px;
+            margin-bottom: 10px;
             border-radius: 999px;
             text-decoration: none;
             font-weight: 600;
@@ -141,9 +125,6 @@
             box-shadow: 0 6px 18px rgba(249, 115, 22, 0.6);
         }
 
-        /* --------------------------------------------------------- */
-        /* 2.6 NAVIGATION BUTTONS                                    */
-        /* --------------------------------------------------------- */
         .nav-button {
             position: fixed;
             bottom: 20px;
@@ -195,9 +176,6 @@
 
 <body>
 
-    <!-- ========================================================= -->
-    <!-- 3️⃣ HEADER SECTION                                         -->
-    <!-- ========================================================= -->
     <header class="site-header">
         <div class="container">
             <h1>Trip Planner - Results</h1>
@@ -206,9 +184,6 @@
 
     <main class="container">
 
-        <!-- ========================================================= -->
-        <!-- 4️⃣ TRIP SUMMARY CARD                                     -->
-        <!-- ========================================================= -->
         <section class="card">
 
             <h2>Trip Planned Successfully ✅</h2>
@@ -224,87 +199,133 @@
 
                 <h2 style="margin-top: 0; color: #0056b3;">Trip Summary</h2>
 
-                <p><strong>Total Places Selected:</strong> {{ places|length }}</p>
-                <p><strong>Total Days:</strong> {{ total_trip_days }}</p>
-                <p><strong>Total Trip Hours:</strong> {{ total_trip_hours }} hours</p>
-                <p><strong>Hours Per Day:</strong> {{ hours_per_day }} hours</p>
+                <p><strong>Total Places Selected:</strong> <span id="total-places">Loading...</span></p>
+                <p><strong>Total Days:</strong> <span id="total-days">Loading...</span></p>
+                <p><strong>Total Trip Hours:</strong> <span id="total-hours">Loading...</span> hours</p>
+                <p><strong>Hours Per Day:</strong> <span id="hours-per-day">Loading...</span> hours</p>
 
             </div>
 
 
-            <!-- ========================================================= -->
-            <!-- 5️⃣ PLACES LIST SECTION                                     -->
-            <!-- ========================================================= -->
+            <!-- Places List Section -->
             <div class="places-list">
                 <h3>Selected Places</h3>
 
-                {% if places %}
-                <ul class="places-items">
-                    {% for place in places %}
-                    <li class="place-item">
-
-                        <div class="place-name">{{ place['name of the place'] }}</div>
-
-                        <div class="field-row">
-                            <span class="field-label">Category:</span>
-                            <span class="field-value">{{ place['category'] }}</span>
-                        </div>
-
-                        <div class="field-row">
-                            <span class="field-label">Time:</span>
-                            <span class="field-value">{{ place['visit_start'] }} - {{ place['visit_end'] }}</span>
-                        </div>
-
-                        <div class="field-row">
-                            <span class="field-label">Spend:</span>
-                            <span class="field-value">{{ place['spend_time_minutes'] }} mins</span>
-                        </div>
-
-                        <div class="field-row">
-                            <span class="field-label">Distance:</span>
-                            <span class="field-value">{{ "%.2f"|format(place['distance_from_previous_km']) }} km</span>
-                        </div>
-
-                        <div class="field-row">
-                            <span class="field-label">Description:</span>
-                            <span class="field-value">{{ place['description'] }}</span>
-                        </div>
-
-                    </li>
-                    {% endfor %}
+                <ul class="places-items" id="places-list">
+                    <!-- Will be populated by JavaScript -->
                 </ul>
-                {% endif %}
             </div>
 
-            <!-- ========================================================= -->
-            <!-- 6️⃣ ACTION BUTTONS (MAP + PDF)                             -->
-            <!-- ========================================================= -->
+            <!-- Action Buttons -->
             <div class="actions">
-                <a class="btn" href="{{ map_url }}">Open Trip Map</a>
-                <!-- GOOGLE MAPS OPEN BUTTON -->
-                <a class="btn" style="background: linear-gradient(135deg,#4285F4,#34A853);" href="{{ google_maps_url }}"
-                    target="_blank">
-                    Open in Google Maps
-                </a>
-
-
-                <!-- NEW DOWNLOAD MAP BUTTON -->
-                <a class="btn btn-secondary" href="{{ map_url }}" download="trip_plan_map.html">
+                <a class="btn" href="trip_plan_map.html">Open Trip Map</a>
+                <a class="btn btn-secondary" href="trip_plan_map.html" download="trip_plan_map.html">
                     Download Map
                 </a>
-
-                <a class="btn btn-secondary" href="{{ pdf_url }}" download>Download Trip PDF</a>
             </div>
 
 
         </section>
     </main>
 
-    <!-- ========================================================= -->
-    <!-- 7️⃣ FIXED NAVIGATION BUTTONS (Back & Next)                 -->
-    <!-- ========================================================= -->
-    <a href="javascript:history.back()" class="nav-button back-nav">← Back</a>
-    <a href="{{ map_url }}" class="nav-button next-nav">Next →</a>
+    <!-- Navigation Buttons -->
+    <a href="plan.html" class="nav-button back-nav">← Back</a>
+    <a href="trip_plan_map.html" class="nav-button next-nav">View Map →</a>
+
+    <script>
+        // Load trip data from localStorage
+        const tripDataStr = localStorage.getItem('tripData');
+
+        if (!tripDataStr) {
+            // No trip data found - show message
+            document.getElementById('total-places').textContent = 'No data';
+            document.getElementById('total-days').textContent = 'No data';
+            document.getElementById('total-hours').textContent = 'No data';
+            document.getElementById('hours-per-day').textContent = 'No data';
+            document.getElementById('places-list').innerHTML = '<li style="padding:20px; text-align:center; color:#666;">No trip data found. Please go back and plan your trip.</li>';
+        } else {
+            const tripData = JSON.parse(tripDataStr);
+
+            // Calculate trip summary
+            const numDays = parseInt(tripData.num_days) || 1;
+            const startTime = tripData.start_time || '09:00';
+            const endTime = tripData.end_time || '18:00';
+
+            // Calculate hours per day
+            const [startHour, startMin] = startTime.split(':').map(Number);
+            const [endHour, endMin] = endTime.split(':').map(Number);
+            const hoursPerDay = ((endHour * 60 + endMin) - (startHour * 60 + startMin)) / 60;
+            const totalHours = hoursPerDay * numDays;
+
+            // Display trip summary
+            document.getElementById('total-days').textContent = numDays;
+            document.getElementById('total-hours').textContent = totalHours.toFixed(2);
+            document.getElementById('hours-per-day').textContent = hoursPerDay.toFixed(2);
+
+            // Load and display places from CSV
+            loadPlaces(tripData);
+        }
+
+        async function loadPlaces(tripData) {
+            try {
+                const response = await fetch('tirupati_places_final_updated.csv');
+                const csvText = await response.text();
+
+                // Parse CSV
+                const lines = csvText.split('\n');
+                const headers = lines[0].split(',').map(h => h.trim());
+
+                const places = [];
+                for (let i = 1; i < Math.min(lines.length, 11); i++) { // Show first 10 places
+                    if (lines[i].trim()) {
+                        const values = lines[i].split(',');
+                        const place = {};
+                        headers.forEach((header, index) => {
+                            place[header] = values[index] ? values[index].trim() : '';
+                        });
+                        places.push(place);
+                    }
+                }
+
+                // Update total places count
+                document.getElementById('total-places').textContent = places.length;
+
+                // Display places
+                const placesList = document.getElementById('places-list');
+                placesList.innerHTML = '';
+
+                places.forEach((place, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'place-item';
+                    li.innerHTML = `
+                        <div class="place-name">${index + 1}. ${place['name of the place'] || 'Unknown'}</div>
+                        <div class="field-row">
+                            <span class="field-label">Category:</span>
+                            <span class="field-value">${place['category'] || 'N/A'}</span>
+                        </div>
+                        <div class="field-row">
+                            <span class="field-label">Time:</span>
+                            <span class="field-value">${place['visit_start'] || 'N/A'} - ${place['visit_end'] || 'N/A'}</span>
+                        </div>
+                        <div class="field-row">
+                            <span class="field-label">Spend:</span>
+                            <span class="field-value">${place['spend_time_minutes'] || 'N/A'} mins</span>
+                        </div>
+                        <div class="field-row">
+                            <span class="field-label">Description:</span>
+                            <span class="field-value">${place['description'] || 'No description'}</span>
+                        </div>
+                    `;
+                    placesList.appendChild(li);
+                });
+
+            } catch (error) {
+                console.error('Error loading places:', error);
+                document.getElementById('total-places').textContent = 'Error loading';
+                document.getElementById('places-list').innerHTML = '<li style="padding:20px; text-align:center; color:#666;">Error loading places data.</li>';
+            }
+        }
+    </script>
 
 </body>
 

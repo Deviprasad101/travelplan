@@ -467,9 +467,20 @@
                 }
             }
 
-            // GitHub Pages Static Site - Redirect to map page
-            // Note: Trip planning calculation requires Flask backend (run locally)
-            window.location.href = "trip_plan_map.html";
+            // Store trip data in localStorage for result page
+            const tripData = {
+                start_lat: start_lat.value,
+                start_lon: start_lon.value,
+                start_time: start_hour.value + ":" + start_minute.value,
+                end_time: end_hour.value + ":" + end_minute.value,
+                trip_date: trip_date.value,
+                num_days: num_days.value,
+                manual_location: manual_location.value
+            };
+            localStorage.setItem('tripData', JSON.stringify(tripData));
+
+            // Redirect to result page
+            window.location.href = "result.html";
         }
 
 
