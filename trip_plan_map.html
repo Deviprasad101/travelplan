@@ -198,14 +198,18 @@
                         });
 
 
-                        // 2. ADD NEW MARKERS FOR SELECTED PLACES
+                        // 2. ADD NEW MARKERS FOR SELECTED PLACES (& Build Path)
                         var waypoints = [[startLon, startLat]];
+                        var allMarkersLatLng = [[startLat, startLon]];
 
                         places.forEach((p, index) => {
-                            if (p.latitude && p.longitude) {
-                                const lat = parseFloat(p.latitude);
-                                const lon = parseFloat(p.longitude);
-                                waypoints.push([lon, lat]); // For OSRM
+                            // Validating coordinates carefully
+                            const rawLat = parseFloat(p.latitude);
+                            const rawLon = parseFloat(p.longitude);
+
+                            if (!isNaN(rawLat) && !isNaN(rawLon)) {
+                                waypoints.push([rawLon, rawLat]); // For OSRM (Lon, Lat)
+                                allMarkersLatLng.push([rawLat, rawLon]); // For Bounds (Lat, Lon)
 
                                 // Create Marker
                                 var redIcon = L.AwesomeMarkers.icon({
@@ -215,7 +219,7 @@
                                     iconColor: 'white'
                                 });
 
-                                var marker = L.marker([lat, lon], { icon: redIcon }).addTo(map);
+                                var marker = L.marker([rawLat, rawLon], { icon: redIcon }).addTo(map);
 
                                 // Create Popup content
                                 var popupContent = `
@@ -231,6 +235,12 @@
                             }
                         });
 
+                        // Fit Map to show ALL markers immediately (Critical Fix)
+                        if (allMarkersLatLng.length > 0) {
+                            var markerBounds = L.latLngBounds(allMarkersLatLng);
+                            map.fitBounds(markerBounds, { padding: [50, 50] });
+                        }
+
 
                         // 3. FETCH & DRAW OSRM ROUTE
                         // Construct OSRM URL (Service: driving, Format: lon,lat;lon,lat...)
@@ -243,7 +253,7 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (data.routes && data.routes.length > 0) {
-                                    // ... (Same drawing logic as before) ...
+                                    // Success: Draw Road Path
                                     var routeCoords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]); // Flip back to Lat,Lon
 
                                     if (typeof L.polyline.antPath === 'function') {
@@ -259,9 +269,6 @@
                                     } else {
                                         L.polyline(routeCoords, { color: 'blue', weight: 5, opacity: 0.7 }).addTo(map);
                                     }
-
-                                    // Fit bounds
-                                    map.fitBounds(L.polyline(routeCoords).getBounds(), { padding: [50, 50] });
                                 } else {
                                     throw new Error("No route found");
                                 }
@@ -271,7 +278,6 @@
                                 // Fallback
                                 var straightPath = waypoints.map(pt => [pt[1], pt[0]]);
                                 L.polyline(straightPath, { color: 'red', weight: 3, dashArray: '5, 10' }).addTo(map);
-                                map.fitBounds(L.latLngBounds(straightPath), { padding: [50, 50] });
                             });
 
                     }, 1000);
