@@ -467,21 +467,9 @@
                 }
             }
 
-            // Add time fields
-            let st = document.createElement("input");
-            st.type = "hidden";
-            st.name = "start_time";
-            st.value = start_hour.value + ":" + start_minute.value;
-
-            let et = document.createElement("input");
-            et.type = "hidden";
-            et.name = "end_time";
-            et.value = end_hour.value + ":" + end_minute.value;
-
-            trip_form.appendChild(st);
-            trip_form.appendChild(et);
-
-            trip_form.submit();
+            // GitHub Pages Static Site - Redirect to result page
+            // Note: Trip planning calculation requires Flask backend (run locally)
+            window.location.href = "result.html";
         }
 
 
@@ -496,4 +484,3 @@
 </body>
 
 </html>
-
